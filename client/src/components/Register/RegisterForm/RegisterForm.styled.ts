@@ -4,12 +4,11 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
   width: 400px;
   height: 500px;
-
   background: #fff;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  border-radius: 4px;
   padding: 80px 30px 92px;
 `;
 
