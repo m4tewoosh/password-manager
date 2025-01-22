@@ -9,10 +9,18 @@ export const Wrapper = styled.header`
   display: flex;
   justify-content: flex-end;
   background-color: #fff;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+  padding: 0 16px 0 32px;
 `;
 
 export const LoginMenu = styled.div`
   display: flex;
-  max-width: 300px;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const LogoutWrapper = styled.div`
+  display: flex;
+  gap: 8px;
 `;

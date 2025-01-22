@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
-import { Menu, MenuProps } from 'antd';
+import { Button, Menu, MenuProps } from 'antd';
+import { BulbOutlined, LogoutOutlined } from '@ant-design/icons';
+import { useAuth } from 'hooks/useAuth';
 
 import * as S from './Header.styled';
 
-const menuItems: MenuProps['items'] = [
+const notLoggedMenuItems: MenuProps['items'] = [
   {
     key: 'register',
     label: <Link to="/register">Register</Link>,
@@ -15,14 +17,34 @@ const menuItems: MenuProps['items'] = [
 ];
 
 const Header = () => {
+  const { isLoggedIn, logoutAction } = useAuth();
+
+  const loggedMenuItems: MenuProps['items'] = [
+    {
+      key: 'logout',
+      label: (
+        <Link onClick={logoutAction} to="#">
+          <S.LogoutWrapper>
+            Logout
+            <LogoutOutlined />
+          </S.LogoutWrapper>
+        </Link>
+      ),
+    },
+  ];
+
   return (
     <S.Wrapper>
       <S.LoginMenu>
+        <Button>
+          <BulbOutlined />
+          Change Theme
+        </Button>
         <Menu
-          defaultSelectedKeys={['1']}
-          defaultOpenKeys={['sub1']}
+          disabledOverflow
           mode="horizontal"
-          items={menuItems}
+          // defaultSelectedKeys={['login']} //fix after logging in and out
+          items={isLoggedIn ? loggedMenuItems : notLoggedMenuItems}
         />
       </S.LoginMenu>
     </S.Wrapper>
