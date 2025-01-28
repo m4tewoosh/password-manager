@@ -13,12 +13,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 router.get('/', authenticateToken, getAllDocuments);
-router.post(
-  '/documents',
-  authenticateToken,
-  upload.single('file'),
-  saveDocument
-);
+router.post('/', authenticateToken, upload.single('file'), saveDocument);
 router.get('/:id', authenticateToken, downloadDocument);
 router.delete('/:id', authenticateToken, deleteDocument);
 

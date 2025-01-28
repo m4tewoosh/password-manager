@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: false })); // what extended means?
 // cors
 app.use(
   cors({
-    origin: 'http://localhost:5173', // Frontend React app
+    origin: process.env.ALLOWED_ORIGIN, // Frontend React app
     credentials: true, // Allow cookies (necessary for httpOnly cookies)
   })
 );
