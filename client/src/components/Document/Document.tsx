@@ -1,14 +1,13 @@
-// import { message } from 'antd';
+import { message } from 'antd';
 import { red, gray } from '@ant-design/colors';
-
 import {
   FilePdfOutlined,
   DownloadOutlined,
   DeleteOutlined,
 } from '@ant-design/icons';
+import { downloadDocument } from 'api';
 
 import * as S from './Document.styled';
-import { downloadDocument } from 'api';
 
 type Document = {
   _id: string;
@@ -22,21 +21,19 @@ type DocumentProps = {
 
 const Document = ({
   document,
+  handleDelete,
 }: // handleDelete
 DocumentProps) => {
-  const {
-    // id,
-    fileName,
-  } = document;
+  const { _id, fileName } = document;
 
   const handleDeleteDocument = async () => {
     console.log('Deleting document...');
-    //   handleDelete(id);
-    //   message.success('Document successfully deleted');
+    handleDelete(_id);
+    message.success('Successfully deleted document');
   };
 
   const handleDownloadDocument = async () => {
-    const { url } = await downloadDocument(document._id);
+    const { url } = await downloadDocument(_id);
 
     console.log(fileName);
 

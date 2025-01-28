@@ -11,6 +11,7 @@ const {
   saveDocument,
   getAllDocuments,
   downloadDocument,
+  deleteDocument,
 } = require('./controllers/documentController');
 
 //can be changed to import?
@@ -47,6 +48,7 @@ app.use('/', require('./routes/authRoutes'));
 app.post('/documents', authenticateToken, upload.single('file'), saveDocument);
 app.get('/documents', authenticateToken, getAllDocuments);
 app.get('/documents/:id', authenticateToken, downloadDocument);
+app.delete('/documents/:id', authenticateToken, deleteDocument);
 
 const port = 8000;
 

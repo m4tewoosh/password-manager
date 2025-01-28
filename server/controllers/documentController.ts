@@ -3,6 +3,7 @@ import {
   S3Client,
   PutObjectCommand,
   GetObjectCommand,
+  DeleteObjectCommand,
 } from '@aws-sdk/client-s3';
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 import { randomUUID } from 'crypto';
@@ -28,11 +29,10 @@ const s3Client = new S3Client({
 
 const saveDocument = async (req: IGetUserAuthInfoRequest, res: Response) => {
   try {
-    const { id } = req.user;
-
-    const { file } = req;
-
-    console.log(file);
+    const {
+      file,
+      user: { id },
+    } = req;
 
     if (!file) {
       return res.status(400).json({ error: 'No file provided' });
@@ -89,10 +89,7 @@ const getAllDocuments = async (req: IGetUserAuthInfoRequest, res: Response) => {
   }
 };
 
-const downloadDocument = async (
-  req: IGetUserAuthInfoRequest,
-  res: Response
-) => {
+const downloadDocument = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
@@ -123,8 +120,43 @@ const downloadDocument = async (
   }
 };
 
+const deleteDocument = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const document = await Document.findOne({ _id: id });
+
+    if (!document) {
+      return res.status(404).json({
+        // 404: Bad request
+        error: 'Document not found',
+      });
+    }
+
+    const { uniqueFilename } = document;
+
+    const deleteParams = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: uniqueFilename,
+    };
+
+    console.log(deleteParams);
+
+    const command = new DeleteObjectCommand(deleteParams);
+    await s3Client.send(command);
+
+    await Document.findByIdAndDelete(id);
+
+    res.status(200).json({ message: 'Successfully deleted document' }); // 200: OK
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+};
+
 module.exports = {
   saveDocument,
   getAllDocuments,
   downloadDocument,
+  deleteDocument,
 };

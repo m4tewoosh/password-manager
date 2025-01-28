@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Input, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { getDocuments } from 'api';
+import { deleteDocument, getDocuments } from 'api';
 import { debounce } from 'utils/debounce';
 import DocumentForm from 'components/DocumentForm/DocumentForm';
 // import Password from 'components/Password/Password';
@@ -43,9 +43,12 @@ const Documents = () => {
   //   };
 
   const handleDeleteDocument = async (id: string) => {
-    console.log(id);
-    // await deleteDocument(id);
-    await fetchDocuments();
+    try {
+      await deleteDocument(id);
+      await fetchDocuments();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const fetchDocuments = async () => {

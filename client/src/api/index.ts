@@ -11,6 +11,7 @@ import getPasswords from './getPasswords';
 import saveDocument from './saveDocument';
 import getDocuments from './getDocuments';
 import downloadDocument from './downloadDocument';
+import deleteDocument from './deleteDocument';
 
 export {
   loginUser,
@@ -26,4 +27,5 @@ export {
   saveDocument,
   getDocuments,
   downloadDocument,
+  deleteDocument,
 };
