@@ -1,9 +1,7 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import User from '../models/user';
 
-interface IGetUserAuthInfoRequest extends Request {
-  user: { email: string; id: string }; // or any other type
-}
+import { IGetUserAuthInfoRequest } from '../types';
 
 const getUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
   try {

@@ -7,15 +7,11 @@ import {
 } from '@ant-design/icons';
 import { downloadDocument } from 'api';
 
+import { DocumentType } from 'types/document';
 import * as S from './Document.styled';
 
-type Document = {
-  _id: string;
-  readableFilename: string;
-};
-
 type DocumentProps = {
-  document: Document;
+  document: DocumentType;
   handleDelete: (id: string) => void;
 };
 

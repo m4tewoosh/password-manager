@@ -7,19 +7,12 @@ import {
 } from '@aws-sdk/client-s3';
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 import { randomUUID } from 'crypto';
-import Document from '../models/document';
-import User from '../models/user';
 import path from 'path';
 import sanitize from 'sanitize-filename';
+import Document from '../models/document';
+import User from '../models/user';
 
-type RequestUser = {
-  email: string;
-  id: string;
-};
-
-interface IGetUserAuthInfoRequest extends Request {
-  user: RequestUser;
-}
+import { IGetUserAuthInfoRequest } from '../types';
 
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,

@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 const {
   encryptPassword,
   decryptPassword,
@@ -9,14 +9,7 @@ const { isValidUrl } = require('../utils/url');
 import Password from '../models/password';
 import User from '../models/user';
 
-type RequestUser = {
-  email: string;
-  id: string;
-};
-
-interface IGetUserAuthInfoRequest extends Request {
-  user: RequestUser;
-}
+import { IGetUserAuthInfoRequest } from '../types';
 
 const savePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
   try {

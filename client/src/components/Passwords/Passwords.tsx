@@ -6,17 +6,10 @@ import { debounce } from 'utils/debounce';
 import Password from 'components/Password/Password';
 import PasswordForm from 'components/PasswordForm/PasswordForm';
 
+import { PasswordType } from 'types/password';
 import * as S from './Passwords.styled';
 
 const { Search } = Input;
-
-type PasswordType = {
-  id: string;
-  name: string;
-  username: string;
-  password: string;
-  faviconUrl: string;
-};
 
 const Passwords = () => {
   const [isNewPasswordModalOpen, setIsNewPasswordModalOpen] = useState(false);

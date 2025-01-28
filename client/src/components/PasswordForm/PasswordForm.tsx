@@ -9,14 +9,8 @@ import {
 import { savePassword, updatePassword } from 'api';
 import { generatePassword } from 'utils/password';
 
+import { PasswordType } from 'types/password';
 import * as S from './PasswordForm.styled';
-
-type Password = {
-  id: string;
-  name: string;
-  username: string;
-  password: string;
-};
 
 type FormValues = {
   username: string;
@@ -27,7 +21,7 @@ type FormValues = {
 type PasswordFormProps = {
   handleCancelModal: () => void;
   fetchPasswords: () => Promise<void>;
-  editedPassword?: Password | null;
+  editedPassword?: PasswordType | null;
 };
 
 const PasswordForm = ({

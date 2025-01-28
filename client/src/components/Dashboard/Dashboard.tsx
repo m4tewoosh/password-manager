@@ -1,13 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { LockOutlined, FileOutlined } from '@ant-design/icons';
-import useStore from 'store/store';
 import getUser from 'api/getUser';
 import { ModuleCard } from 'components/ModuleCard/ModuleCard';
 
+import { User } from 'types/user';
 import * as S from './Dashboard.styled';
 
 const Dashboard = () => {
-  const { user, setUser } = useStore();
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const getUserData = async () => {

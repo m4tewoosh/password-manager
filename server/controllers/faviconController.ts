@@ -1,5 +1,4 @@
 import * as cheerio from 'cheerio';
-import { URL } from 'url';
 
 const extractFaviconURL = async (websiteUrl: string) => {
   try {

@@ -4,20 +4,12 @@ require('dotenv').config();
 
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-import multer from 'multer';
 
-const { authenticateToken } = require('./controllers/authController');
-const {
-  saveDocument,
-  getAllDocuments,
-  downloadDocument,
-  deleteDocument,
-} = require('./controllers/documentController');
+const authRoutes = require('./routes/authRoutes');
+const documentRoutes = require('./routes/documentRoutes');
+const passwordRoutes = require('./routes/passwordRoutes');
 
 const app = express();
-
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
 
 // db connection
 mongoose
@@ -30,6 +22,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false })); // what extended means?
 
+// cors
 app.use(
   cors({
     origin: 'http://localhost:5173', // Frontend React app
@@ -37,12 +30,10 @@ app.use(
   })
 );
 
-app.use('/', require('./routes/authRoutes'));
-
-app.post('/documents', authenticateToken, upload.single('file'), saveDocument);
-app.get('/documents', authenticateToken, getAllDocuments);
-app.get('/documents/:id', authenticateToken, downloadDocument);
-app.delete('/documents/:id', authenticateToken, deleteDocument);
+// routes
+app.use('/', authRoutes);
+app.use('/passwords', passwordRoutes);
+app.use('/documents', documentRoutes);
 
 const port = 8000;
 

@@ -6,14 +6,10 @@ import { debounce } from 'utils/debounce';
 import DocumentForm from 'components/DocumentForm/DocumentForm';
 import Document from 'components/Document/Document';
 
+import { DocumentType } from 'types/document';
 import * as S from './Documents.styled';
 
 const { Search } = Input;
-
-type DocumentType = {
-  _id: string;
-  readableFilename: string;
-};
 
 const Documents = () => {
   const [isNewDocumentModalOpen, setIsNewDocumentModalOpen] = useState(false);

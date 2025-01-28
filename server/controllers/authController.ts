@@ -11,19 +11,7 @@ const {
 } = require('../utils/password');
 const jwt = require('jsonwebtoken');
 
-type RequestUser = {
-  email: string;
-  id: string;
-};
-
-type Token = {
-  id: string;
-  jti: string;
-};
-
-interface IGetUserAuthInfoRequest extends Request {
-  user: RequestUser;
-}
+import { RequestUser, Token, IGetUserAuthInfoRequest } from '../types';
 
 const generateAccessToken = (id: string) => {
   return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {

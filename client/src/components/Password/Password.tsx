@@ -8,18 +8,11 @@ import {
   GlobalOutlined,
 } from '@ant-design/icons';
 
+import { PasswordType } from 'types/password';
 import * as S from './Password.styled';
 
-type Password = {
-  id: string;
-  name: string;
-  username: string;
-  password: string;
-  faviconUrl?: string;
-};
-
 type PasswordProps = {
-  password: Password;
+  password: PasswordType;
   handleEdit: (id: string) => void;
   handleDelete: (id: string) => void;
 };
