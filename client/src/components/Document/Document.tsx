@@ -19,7 +19,6 @@ const Document = ({ document, handleDelete }: DocumentProps) => {
   const { _id, readableFilename } = document;
 
   const handleDeleteDocument = async () => {
-    console.log('Deleting document...');
     handleDelete(_id);
     message.success('Successfully deleted document');
   };
