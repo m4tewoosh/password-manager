@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button, Menu, MenuProps } from 'antd';
-import { BulbOutlined, LogoutOutlined } from '@ant-design/icons';
+import {
+  BulbOutlined,
+  LogoutOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
 import { useAuth } from 'hooks/useAuth';
 
 import * as S from './Header.styled';
@@ -27,6 +31,14 @@ const Header = () => {
     {
       key: 'dashboard',
       label: <Link to="/dashboard">Dashboard</Link>,
+    },
+    {
+      key: 'settings',
+      label: (
+        <Link to="/settings">
+          <SettingOutlined />
+        </Link>
+      ),
     },
     {
       key: 'logout',

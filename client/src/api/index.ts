@@ -12,6 +12,7 @@ import saveDocument from './saveDocument';
 import getDocuments from './getDocuments';
 import downloadDocument from './downloadDocument';
 import deleteDocument from './deleteDocument';
+import updateUser from './updateUser';
 
 export {
   loginUser,
@@ -28,4 +29,5 @@ export {
   getDocuments,
   downloadDocument,
   deleteDocument,
+  updateUser,
 };

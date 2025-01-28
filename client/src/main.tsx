@@ -1,13 +1,14 @@
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Root from 'routes/root';
 import {
   RegisterPage,
   LoginPage,
   DashboardPage,
   PasswordsPage,
   DocumentsPage,
+  SettingsPage,
 } from 'routes/index';
-import Root from 'routes/root';
 
 import './index.css';
 
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: 'documents',
         element: <DocumentsPage />,
+      },
+      {
+        path: 'settings',
+        element: <SettingsPage />,
       },
     ],
   },

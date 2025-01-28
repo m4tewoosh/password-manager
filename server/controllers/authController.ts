@@ -77,7 +77,7 @@ const registerUser = async (req: Request, res: Response) => {
     const user = await User.create({
       email,
       password: hashedPassword,
-      passwordModuleOn: true,
+      passwordsModuleOn: true,
       documentsModuleOn: true,
       salt: userSalt,
     });

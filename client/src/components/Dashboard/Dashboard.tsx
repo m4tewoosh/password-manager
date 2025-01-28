@@ -28,7 +28,7 @@ const Dashboard = () => {
   return (
     <div>
       <S.ModuleCardsWrapper>
-        {user?.passwordModuleOn && (
+        {user?.passwordsModuleOn && (
           <ModuleCard
             icon={<LockOutlined />}
             name="Passwords"

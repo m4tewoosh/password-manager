@@ -98,7 +98,7 @@ const updatePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
     }
 
     res
-      .status(201) // 200: OK
+      .status(200) // 200: OK
       .json(updatedPassword);
   } catch (error) {
     console.error(error);

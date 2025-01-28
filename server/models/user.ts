@@ -4,7 +4,7 @@ interface IUser {
   email: string;
   documentsModuleOn: boolean;
   password: string;
-  passwordModuleOn: boolean;
+  passwordsModuleOn: boolean;
   salt: string;
 }
 
@@ -16,7 +16,7 @@ const userSchema = new Schema<IUser>({
   },
   documentsModuleOn: { type: Boolean, required: true },
   password: { type: String, required: true },
-  passwordModuleOn: { type: Boolean, required: true },
+  passwordsModuleOn: { type: Boolean, required: true },
   salt: { type: String, required: true },
 });
 

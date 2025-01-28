@@ -20,7 +20,7 @@ const getUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
     res.status(200).json({
       // 200: OK
       email: user.email,
-      passwordModuleOn: user.passwordModuleOn,
+      passwordsModuleOn: user.passwordsModuleOn,
       documentsModuleOn: user.documentsModuleOn,
     });
   } catch (error) {
@@ -29,6 +29,35 @@ const getUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
   }
 };
 
+const updateUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
+  try {
+    const { passwordsModuleOn, documentsModuleOn } = req.body;
+    const { id } = req.user;
+
+    const updatedData = {
+      passwordsModuleOn,
+      documentsModuleOn,
+    };
+
+    const updatedUser = await User.findByIdAndUpdate(id, updatedData, {
+      new: true,
+    });
+
+    if (!updatedUser) {
+      // 404: Bad Request
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res
+      .status(200) // 200: OK
+      .json({ message: 'Successfully updated user' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+};
+
 module.exports = {
   getUser,
+  updateUser,
 };
