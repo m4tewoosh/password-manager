@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { message, Upload } from 'antd';
-import type { UploadProps, UploadFile } from 'antd';
+import type { UploadProps } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import { saveDocument } from 'api';
 
@@ -39,42 +39,28 @@ const DocumentForm = ({
 
   const props: UploadProps = {
     name: 'file',
-    multiple: false, // Only single file upload
+    multiple: false,
     customRequest: ({ file }) => {
-      handleUpload(file as UploadFile);
-      // return Promise.resolve(); // Prevent default upload behavior
+      handleUpload(file as Blob);
     },
-    showUploadList: false, // Hide default file list
-    disabled: isLoading, // Disable Dragger during upload
+    showUploadList: false,
+    disabled: isLoading,
     beforeUpload: (file) => {
-      // const isSupported = [
-      //   'application/pdf',
-      //   'application/msword',
-      //   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      //   'text/plain',
-      // ].includes(file.type);
-
-      // if (!isSupported) {
-      //   message.error(`${file.name} is not a supported file type.`);
-      //   return Upload.LIST_IGNORE;
-      // }
-
-      const isSizeValid = file.size / 1024 / 1024 < 5; // 5MB limit
+      const isSizeValid = file.size / 1024 / 1024 < 10; // 10MB limit
       if (!isSizeValid) {
         message.error(`${file.name} exceeds the size limit of 5MB.`);
         return Upload.LIST_IGNORE;
       }
 
-      return true; // Allow file upload
+      return true;
     },
-    accept: acceptedFileTypes.join(','), // Optional: Restrict file types
+    accept: acceptedFileTypes.join(','),
   };
 
-  const handleUpload = async (file: UploadFile): Promise<void> => {
+  const handleUpload = async (file: Blob) => {
     const formData = new FormData();
 
-    // console.log(file.originFileObj);
-    formData.append('file', file as Blob); // Using `originFileObj` for raw file object
+    formData.append('file', file);
 
     setIsLoading(true);
 

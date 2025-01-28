@@ -1,6 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
-const dotenv = require('dotenv').config();
+require('dotenv').config();
 
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
@@ -13,10 +13,6 @@ const {
   downloadDocument,
   deleteDocument,
 } = require('./controllers/documentController');
-
-//can be changed to import?
-
-// const router = express.Router();
 
 const app = express();
 
@@ -42,8 +38,6 @@ app.use(
 );
 
 app.use('/', require('./routes/authRoutes'));
-
-// app.use('/user', UserRouter);
 
 app.post('/documents', authenticateToken, upload.single('file'), saveDocument);
 app.get('/documents', authenticateToken, getAllDocuments);

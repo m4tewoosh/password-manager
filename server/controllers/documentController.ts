@@ -113,7 +113,7 @@ const getAllDocuments = async (req: IGetUserAuthInfoRequest, res: Response) => {
     const documents = await Document.find(
       { userId: id },
       { readableFilename: 1, id: 1 }
-    ); // Retrieve all documents in the Documents collection
+    );
 
     res.status(200).json(documents); // 200: OK
   } catch (error) {

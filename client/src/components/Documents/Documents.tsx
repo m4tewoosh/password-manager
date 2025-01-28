@@ -4,15 +4,14 @@ import { PlusOutlined } from '@ant-design/icons';
 import { deleteDocument, getDocuments } from 'api';
 import { debounce } from 'utils/debounce';
 import DocumentForm from 'components/DocumentForm/DocumentForm';
-// import Password from 'components/Password/Password';
+import Document from 'components/Document/Document';
 
 import * as S from './Documents.styled';
-import Document from 'components/Document/Document';
 
 const { Search } = Input;
 
 type DocumentType = {
-  id: string;
+  _id: string;
   readableFilename: string;
 };
 
@@ -32,15 +31,6 @@ const Documents = () => {
   };
 
   const handleSearch = debounce(handleFilterDocuments, 400);
-
-  //   const handleEditPassword = (id: string) => {
-  // const password = passwords.find((password) => password.id === id);
-
-  // if (password) {
-  //   setEditedPassword(password);
-  //   setIsEditPasswordModalOpen(true);
-  // }
-  //   };
 
   const handleDeleteDocument = async (id: string) => {
     try {
@@ -93,7 +83,6 @@ const Documents = () => {
           <Document
             key={index}
             document={document}
-            // handleEdit={handleEditPassword}
             handleDelete={handleDeleteDocument}
           />
         ))}

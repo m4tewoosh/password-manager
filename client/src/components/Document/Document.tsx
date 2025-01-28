@@ -19,11 +19,7 @@ type DocumentProps = {
   handleDelete: (id: string) => void;
 };
 
-const Document = ({
-  document,
-  handleDelete,
-}: // handleDelete
-DocumentProps) => {
+const Document = ({ document, handleDelete }: DocumentProps) => {
   const { _id, readableFilename } = document;
 
   const handleDeleteDocument = async () => {
@@ -43,14 +39,11 @@ DocumentProps) => {
       link.click();
       window.document.body.removeChild(link);
     }
-
-    //   message.success('Document successfully deleted');
   };
 
   return (
     <S.Wrapper>
       <S.DataWrapper>
-        {/* {faviconUrl ? <S.WebsiteIcon src={faviconUrl} /> : <GlobalOutlined />} */}
         <FilePdfOutlined />
         <Tooltip title={readableFilename}>
           <S.DocumentName>{readableFilename}</S.DocumentName>
