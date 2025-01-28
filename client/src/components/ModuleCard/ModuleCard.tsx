@@ -5,8 +5,8 @@ import { Button } from 'antd';
 import * as S from './ModuleCard.styled';
 
 type ModuleCardProps = {
-  name: 'Files' | 'Passwords';
-  url: '/files' | '/passwords';
+  name: 'Documents' | 'Passwords';
+  url: '/documents' | '/passwords';
   icon: ReactElement;
 };
 

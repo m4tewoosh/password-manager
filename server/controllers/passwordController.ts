@@ -4,6 +4,8 @@ const {
   decryptPassword,
   deriveEncryptionKey,
 } = require('../utils/password');
+const { extractFaviconURL } = require('../controllers/faviconController');
+const { isValidUrl } = require('../utils/url');
 import Password from '../models/password';
 import User from '../models/user';
 
@@ -35,11 +37,18 @@ const savePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
     const encryptionKey = deriveEncryptionKey(user.password, user.salt);
     const encryptedPassword = encryptPassword(encryptionKey, password);
 
+    let faviconUrl;
+
+    if (isValidUrl(name)) {
+      faviconUrl = await extractFaviconURL(name);
+    }
+
     const newPassword = await Password.create({
       username,
       name,
       password: encryptedPassword,
       userId: user.id,
+      faviconUrl,
     });
 
     res
@@ -54,7 +63,7 @@ const savePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
 const updatePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
   try {
     const { id } = req.params;
-    const { password } = req.body;
+    const { password, name } = req.body;
 
     const user = await User.findOne({ _id: req.user.id });
 
@@ -62,16 +71,23 @@ const updatePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
     if (!user) {
       return res.status(404).json({
         // 404: Bad request
-        error: 'Bad request',
+        error: 'User not found',
       });
     }
 
     const encryptionKey = deriveEncryptionKey(user.password, user.salt);
     const encryptedPassword = encryptPassword(encryptionKey, password);
 
+    let faviconUrl;
+
+    if (isValidUrl(name)) {
+      faviconUrl = await extractFaviconURL(name);
+    }
+
     const updatedData = {
       ...req.body,
       password: encryptedPassword,
+      faviconUrl,
     };
 
     const updatedPassword = await Password.findByIdAndUpdate(id, updatedData, {
@@ -133,7 +149,7 @@ const getAllPasswords = async (req: IGetUserAuthInfoRequest, res: Response) => {
     const passwords = await Password.find({ userId: id }); // Retrieve all documents in the Password collection
 
     const decryptedPasswords = passwords.map(
-      ({ id, username, name, password }) => {
+      ({ id, username, name, password, faviconUrl }) => {
         const decryptedPassword = decryptPassword(encryptionKey, password);
 
         return {
@@ -141,6 +157,7 @@ const getAllPasswords = async (req: IGetUserAuthInfoRequest, res: Response) => {
           username,
           name,
           password: decryptedPassword,
+          faviconUrl,
         };
       }
     );

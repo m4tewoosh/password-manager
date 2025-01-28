@@ -12,25 +12,13 @@ export const Wrapper = styled.div`
   padding: 0 8px 0 16px;
 `;
 
-export const WebsiteIcon = styled.img`
+export const DocumentIcon = styled.img`
   width: 24px;
   height: 24px;
 `;
 
-export const PasswordData = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  align-items: flex-start;
-
-  > span {
-    font-size: 12px;
-
-    &:first-child {
-      border-bottom: 1px solid #d9d9d9;
-    }
-  }
+export const DocumentName = styled.p`
+  font-size: 14px;
 `;
 
 export const DataWrapper = styled.div`

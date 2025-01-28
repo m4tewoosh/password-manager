@@ -23,7 +23,7 @@ const getUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
       // 200: OK
       email: user.email,
       passwordModuleOn: user.passwordModuleOn,
-      filesModuleOn: user.filesModuleOn,
+      documentsModuleOn: user.documentsModuleOn,
     });
   } catch (error) {
     console.error(error);

@@ -1,42 +1,51 @@
 import { message } from 'antd';
 import { blue, red, gray } from '@ant-design/colors';
 
-import { CopyOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import {
+  CopyOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  GlobalOutlined,
+} from '@ant-design/icons';
+
 import * as S from './Password.styled';
 
-type PasswordProps = {
+type Password = {
   id: string;
   name: string;
   username: string;
   password: string;
+  faviconUrl?: string;
+};
+
+type PasswordProps = {
+  password: Password;
   handleEdit: (id: string) => void;
   handleDelete: (id: string) => void;
 };
 
-const Password = ({
-  id,
-  name,
-  username,
-  password,
-  handleEdit,
-  handleDelete,
-}: PasswordProps) => {
+const Password = ({ password, handleEdit, handleDelete }: PasswordProps) => {
+  const { id, name, username, faviconUrl } = password;
+
   const handleCopyPassword = () => {
-    navigator.clipboard.writeText(password);
-    message.success('Password copied');
+    navigator.clipboard.writeText(password.password);
+    message.success('Copied to clipboard');
   };
 
   const handleDeletePassword = async () => {
-    await handleDelete(id);
+    handleDelete(id);
     message.success('Password successfully deleted');
   };
 
   return (
     <S.Wrapper>
-      <S.PasswordData>
-        <span>{name}</span>
-        <span>{username}</span>
-      </S.PasswordData>
+      <S.DataWrapper>
+        {faviconUrl ? <S.WebsiteIcon src={faviconUrl} /> : <GlobalOutlined />}
+        <S.PasswordData>
+          <span>{name}</span>
+          <span>{username}</span>
+        </S.PasswordData>
+      </S.DataWrapper>
 
       <S.ActionsWrapper>
         <button onClick={handleCopyPassword}>

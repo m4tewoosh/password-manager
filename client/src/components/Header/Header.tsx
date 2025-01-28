@@ -21,6 +21,10 @@ const Header = () => {
 
   const loggedMenuItems: MenuProps['items'] = [
     {
+      key: 'dashboard',
+      label: <Link to="/dashboard">Dashboard</Link>,
+    },
+    {
       key: 'logout',
       label: (
         <Link onClick={logoutAction} to="#">

@@ -5,6 +5,7 @@ const savePassword = (username: string, name: string, password: string) =>
     method: 'POST',
     endpoint: 'passwords',
     body: { username, name, password },
+    contentType: 'application/json',
   });
 
 export default savePassword;

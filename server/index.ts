@@ -1,12 +1,26 @@
 import express from 'express';
 import mongoose from 'mongoose';
+const dotenv = require('dotenv').config();
+
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+import multer from 'multer';
+
+const { authenticateToken } = require('./controllers/authController');
+const {
+  saveDocument,
+  getAllDocuments,
+  downloadDocument,
+} = require('./controllers/documentController');
 
 //can be changed to import?
-const cors = require('cors');
-const dotenv = require('dotenv').config();
-const cookieParser = require('cookie-parser');
+
+// const router = express.Router();
 
 const app = express();
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 // db connection
 mongoose
@@ -27,7 +41,12 @@ app.use(
 );
 
 app.use('/', require('./routes/authRoutes'));
+
 // app.use('/user', UserRouter);
+
+app.post('/documents', authenticateToken, upload.single('file'), saveDocument);
+app.get('/documents', authenticateToken, getAllDocuments);
+app.get('/documents/:id', authenticateToken, downloadDocument);
 
 const port = 8000;
 

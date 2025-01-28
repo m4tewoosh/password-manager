@@ -6,15 +6,30 @@ type RequestConfig = {
   endpoint: string;
   method: 'GET' | 'POST' | 'PATCH' | 'DELETE';
   body?: object;
+  contentType?: string;
 };
 
-const sendRequest = async ({ endpoint, method, body }: RequestConfig) => {
+const bodyParser = (body: object) => {
+  if (body instanceof FormData) {
+    return body;
+  }
+
+  return JSON.stringify(body);
+};
+
+const sendRequest = async ({
+  endpoint,
+  method,
+  body,
+  contentType,
+}: RequestConfig) => {
   const response = await fetch(`${apiUrl}/${endpoint}`, {
     method: method,
     headers: {
-      'Content-Type': body ? 'application/json' : 'plain/text',
+      ...(contentType && { 'Content-Type': contentType }),
+      // 'Content-Type': body ? 'application/json' : 'plain/text',
     },
-    body: body ? JSON.stringify(body) : null,
+    body: body ? bodyParser(body) : null,
     credentials: 'include',
   });
 

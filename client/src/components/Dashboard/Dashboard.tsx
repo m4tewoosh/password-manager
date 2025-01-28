@@ -40,8 +40,12 @@ const Dashboard = () => {
           />
         )}
 
-        {user?.filesModuleOn && (
-          <ModuleCard icon={<FileOutlined />} name="Files" url="/files" />
+        {user?.documentsModuleOn && (
+          <ModuleCard
+            icon={<FileOutlined />}
+            name="Documents"
+            url="/documents"
+          />
         )}
       </S.ModuleCardsWrapper>
     </div>

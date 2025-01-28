@@ -2,7 +2,7 @@ import { model, Schema, Types } from 'mongoose';
 
 interface IUser {
   email: string;
-  filesModuleOn: boolean;
+  documentsModuleOn: boolean;
   password: string;
   passwordModuleOn: boolean;
   salt: string;
@@ -14,7 +14,7 @@ const userSchema = new Schema<IUser>({
     unique: true,
     required: true,
   },
-  filesModuleOn: { type: Boolean, required: true },
+  documentsModuleOn: { type: Boolean, required: true },
   password: { type: String, required: true },
   passwordModuleOn: { type: Boolean, required: true },
   salt: { type: String, required: true },

@@ -90,7 +90,7 @@ const registerUser = async (req: Request, res: Response) => {
       email,
       password: hashedPassword,
       passwordModuleOn: true,
-      filesModuleOn: true,
+      documentsModuleOn: true,
       salt: userSalt,
     });
 

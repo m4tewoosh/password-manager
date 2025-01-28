@@ -10,21 +10,24 @@ import * as S from './Passwords.styled';
 
 const { Search } = Input;
 
-type Password = {
+type PasswordType = {
   id: string;
   name: string;
   username: string;
   password: string;
+  faviconUrl: string;
 };
 
 const Passwords = () => {
   const [isNewPasswordModalOpen, setIsNewPasswordModalOpen] = useState(false);
   const [isEditPasswordModalOpen, setIsEditPasswordModalOpen] = useState(false);
   const [editedPassword, setEditedPassword] = useState<
-    Password | Record<string, never>
+    PasswordType | Record<string, never>
   >({});
-  const [passwords, setPasswords] = useState<Password[]>([]);
-  const [filteredPasswords, setFilteredPasswords] = useState<Password[]>([]);
+  const [passwords, setPasswords] = useState<PasswordType[]>([]);
+  const [filteredPasswords, setFilteredPasswords] = useState<PasswordType[]>(
+    []
+  );
 
   const handleFilterPasswords = (value: string) => {
     const filteredPasswords = passwords.filter(
@@ -93,10 +96,7 @@ const Passwords = () => {
         {filteredPasswords.map((password, index) => (
           <Password
             key={index}
-            id={password.id}
-            name={password.name}
-            username={password.username}
-            password={password.password}
+            password={password}
             handleEdit={handleEditPassword}
             handleDelete={handleDeletePassword}
           />

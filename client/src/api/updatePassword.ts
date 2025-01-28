@@ -10,6 +10,7 @@ const updatePassword = (
     method: 'PATCH',
     endpoint: `passwords/${id}`,
     body: { username, name, password },
+    contentType: 'application/json',
   });
 
 export default updatePassword;

@@ -8,6 +8,9 @@ import savePassword from './savePassword';
 import updatePassword from './updatePassword';
 import deletePassword from './deletePassword';
 import getPasswords from './getPasswords';
+import saveDocument from './saveDocument';
+import getDocuments from './getDocuments';
+import downloadDocument from './downloadDocument';
 
 export {
   loginUser,
@@ -20,4 +23,7 @@ export {
   updatePassword,
   deletePassword,
   getPasswords,
+  saveDocument,
+  getDocuments,
+  downloadDocument,
 };

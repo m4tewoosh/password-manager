@@ -1,5 +1,5 @@
 export type User = {
   email: string;
-  filesModuleOn: boolean;
+  documentsModuleOn: boolean;
   passwordModuleOn: boolean;
 };

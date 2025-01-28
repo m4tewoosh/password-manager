@@ -5,6 +5,7 @@ import {
   LoginPage,
   DashboardPage,
   PasswordsPage,
+  DocumentsPage,
 } from 'routes/index';
 import Root from 'routes/root';
 
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: 'passwords',
         element: <PasswordsPage />,
+      },
+      {
+        path: 'documents',
+        element: <DocumentsPage />,
       },
     ],
   },

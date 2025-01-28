@@ -5,6 +5,7 @@ interface IPassword {
   name: string;
   password: string;
   userId: Schema.Types.ObjectId;
+  faviconUrl?: string;
 }
 
 const passwordSchema = new Schema<IPassword>({
@@ -15,6 +16,7 @@ const passwordSchema = new Schema<IPassword>({
   name: { type: String, required: true },
   password: { type: String, required: true },
   userId: { type: Schema.Types.ObjectId, required: true },
+  faviconUrl: { type: String, required: false },
 });
 
 const PasswordModel = model('Password', passwordSchema);

@@ -5,6 +5,7 @@ const loginUser = (email: string, password: string) =>
     method: 'POST',
     endpoint: 'login',
     body: { email, password },
+    contentType: 'application/json',
   });
 
 export default loginUser;
