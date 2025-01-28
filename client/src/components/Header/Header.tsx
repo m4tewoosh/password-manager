@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Button, Menu, MenuProps } from 'antd';
 import { BulbOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useAuth } from 'hooks/useAuth';
@@ -18,6 +19,9 @@ const notLoggedMenuItems: MenuProps['items'] = [
 
 const Header = () => {
   const { isLoggedIn, logoutAction } = useAuth();
+  const location = useLocation();
+
+  const [currentPage, setCurrentPage] = useState<string>('');
 
   const loggedMenuItems: MenuProps['items'] = [
     {
@@ -37,6 +41,10 @@ const Header = () => {
     },
   ];
 
+  useEffect(() => {
+    setCurrentPage(location.pathname.slice(1));
+  }, [location.pathname]);
+
   return (
     <S.Wrapper>
       <S.LoginMenu>
@@ -47,7 +55,7 @@ const Header = () => {
         <Menu
           disabledOverflow
           mode="horizontal"
-          // defaultSelectedKeys={['login']} //fix after logging in and out
+          selectedKeys={[currentPage]}
           items={isLoggedIn ? loggedMenuItems : notLoggedMenuItems}
         />
       </S.LoginMenu>
