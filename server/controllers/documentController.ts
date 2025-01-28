@@ -9,6 +9,8 @@ const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 import { randomUUID } from 'crypto';
 import Document from '../models/document';
 import User from '../models/user';
+import path from 'path';
+import sanitize from 'sanitize-filename';
 
 type RequestUser = {
   email: string;
@@ -27,6 +29,24 @@ const s3Client = new S3Client({
   },
 });
 
+const acceptedFileTypes = [
+  '.pdf',
+  '.doc',
+  '.docx',
+  '.odt',
+  '.rtf',
+  '.txt',
+  '.xls',
+  '.xlsx',
+  '.csv',
+  '.ppt',
+  '.pptx',
+  '.odp',
+  '.md',
+  '.xml',
+  '.json',
+];
+
 const saveDocument = async (req: IGetUserAuthInfoRequest, res: Response) => {
   try {
     const {
@@ -38,9 +58,21 @@ const saveDocument = async (req: IGetUserAuthInfoRequest, res: Response) => {
       return res.status(400).json({ error: 'No file provided' });
     }
 
-    //sanitize originalname with @sanitize-filename
+    const fileExtension = path.extname(file.originalname).toLowerCase();
 
-    const uniqueFilename = `${randomUUID()}-${file.originalname}`;
+    if (!acceptedFileTypes.includes(fileExtension)) {
+      return res.status(400).json({ error: 'File type not supported' });
+    }
+
+    //sanitize originalname with @sanitize-filename
+    const sanitizedFilename = sanitize(file.originalname);
+
+    const filenameWithNonASCIICharacters = Buffer.from(
+      sanitizedFilename,
+      'latin1'
+    ).toString('utf8');
+
+    const uniqueFilename = `${randomUUID()}-${sanitizedFilename}`;
 
     const uploadParams = {
       Bucket: process.env.AWS_BUCKET_NAME,
@@ -53,7 +85,8 @@ const saveDocument = async (req: IGetUserAuthInfoRequest, res: Response) => {
 
     const newDocument = await Document.create({
       userId: id,
-      fileName: file.originalname,
+      fileName: sanitizedFilename,
+      readableFilename: filenameWithNonASCIICharacters,
       uniqueFilename,
     });
 
@@ -79,7 +112,7 @@ const getAllDocuments = async (req: IGetUserAuthInfoRequest, res: Response) => {
 
     const documents = await Document.find(
       { userId: id },
-      { fileName: 1, id: 1 }
+      { readableFilename: 1, id: 1 }
     ); // Retrieve all documents in the Documents collection
 
     res.status(200).json(documents); // 200: OK

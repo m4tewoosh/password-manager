@@ -18,7 +18,11 @@ export const DocumentIcon = styled.img`
 `;
 
 export const DocumentName = styled.p`
+  max-width: 112px;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 14px;
+  white-space: nowrap;
 `;
 
 export const DataWrapper = styled.div`
@@ -34,6 +38,7 @@ export const DataWrapper = styled.div`
 export const ActionsWrapper = styled.div`
   display: flex;
   gap: 8px;
+  margin-left: 8px;
 
   > button {
     border: unset;

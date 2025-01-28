@@ -4,12 +4,14 @@ interface IDocument {
   userId: Schema.Types.ObjectId;
   fileName: string;
   uniqueFilename: string;
+  readableFilename: string;
 }
 
 const documentSchema = new Schema<IDocument>({
   userId: { type: String, required: true },
   fileName: { type: String, required: true },
   uniqueFilename: { type: String, required: true },
+  readableFilename: { type: String, required: true },
 });
 
 const DocumentModel = model('Document', documentSchema);

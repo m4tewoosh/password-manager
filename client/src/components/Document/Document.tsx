@@ -1,4 +1,4 @@
-import { message } from 'antd';
+import { message, Tooltip } from 'antd';
 import { red, gray } from '@ant-design/colors';
 import {
   FilePdfOutlined,
@@ -11,7 +11,7 @@ import * as S from './Document.styled';
 
 type Document = {
   _id: string;
-  fileName: string;
+  readableFilename: string;
 };
 
 type DocumentProps = {
@@ -24,7 +24,7 @@ const Document = ({
   handleDelete,
 }: // handleDelete
 DocumentProps) => {
-  const { _id, fileName } = document;
+  const { _id, readableFilename } = document;
 
   const handleDeleteDocument = async () => {
     console.log('Deleting document...');
@@ -35,12 +35,10 @@ DocumentProps) => {
   const handleDownloadDocument = async () => {
     const { url } = await downloadDocument(_id);
 
-    console.log(fileName);
-
     if (url) {
       const link = window.document.createElement('a');
       link.href = url;
-      link.download = fileName;
+      link.download = readableFilename;
       window.document.body.appendChild(link);
       link.click();
       window.document.body.removeChild(link);
@@ -54,7 +52,9 @@ DocumentProps) => {
       <S.DataWrapper>
         {/* {faviconUrl ? <S.WebsiteIcon src={faviconUrl} /> : <GlobalOutlined />} */}
         <FilePdfOutlined />
-        <S.DocumentName>{fileName}</S.DocumentName>
+        <Tooltip title={readableFilename}>
+          <S.DocumentName>{readableFilename}</S.DocumentName>
+        </Tooltip>
       </S.DataWrapper>
 
       <S.ActionsWrapper>

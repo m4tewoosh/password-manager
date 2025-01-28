@@ -13,6 +13,24 @@ type DocumentFormProps = {
   fetchDocuments: () => Promise<void>;
 };
 
+const acceptedFileTypes = [
+  '.pdf',
+  '.doc',
+  '.docx',
+  '.odt',
+  '.rtf',
+  '.txt',
+  '.xls',
+  '.xlsx',
+  '.csv',
+  '.ppt',
+  '.pptx',
+  '.odp',
+  '.md',
+  '.xml',
+  '.json',
+];
+
 const DocumentForm = ({
   handleCancelModal,
   fetchDocuments,
@@ -49,7 +67,7 @@ const DocumentForm = ({
 
       return true; // Allow file upload
     },
-    accept: '.pdf,.doc,.docx,.txt', // Optional: Restrict file types
+    accept: acceptedFileTypes.join(','), // Optional: Restrict file types
   };
 
   const handleUpload = async (file: UploadFile): Promise<void> => {

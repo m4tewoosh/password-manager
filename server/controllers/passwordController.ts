@@ -81,13 +81,18 @@ const updatePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
     let faviconUrl;
 
     if (isValidUrl(name)) {
-      faviconUrl = await extractFaviconURL(name);
+      try {
+        faviconUrl = await extractFaviconURL(name);
+      } catch (error) {
+        console.error(`Error extracting favicon: ${error}`);
+        faviconUrl = null;
+      }
     }
 
     const updatedData = {
       ...req.body,
       password: encryptedPassword,
-      faviconUrl,
+      faviconUrl: isValidUrl(name) ? faviconUrl : null,
     };
 
     const updatedPassword = await Password.findByIdAndUpdate(id, updatedData, {

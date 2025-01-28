@@ -13,7 +13,7 @@ const { Search } = Input;
 
 type DocumentType = {
   id: string;
-  fileName: string;
+  readableFilename: string;
 };
 
 const Documents = () => {
@@ -25,7 +25,7 @@ const Documents = () => {
 
   const handleFilterDocuments = (value: string) => {
     const filteredDocuments = documents.filter((document) =>
-      document.fileName.toLowerCase().includes(value.toLowerCase())
+      document.readableFilename.toLowerCase().includes(value.toLowerCase())
     );
 
     setFilteredDocuments(filteredDocuments);
