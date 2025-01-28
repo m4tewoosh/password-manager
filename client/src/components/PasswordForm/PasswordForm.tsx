@@ -27,7 +27,7 @@ type FormValues = {
 type PasswordFormProps = {
   handleCancelModal: () => void;
   fetchPasswords: () => Promise<void>;
-  editedPassword?: Password | Record<string, never>;
+  editedPassword?: Password | null;
 };
 
 const PasswordForm = ({

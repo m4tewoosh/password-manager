@@ -140,8 +140,6 @@ const deleteDocument = async (req: Request, res: Response) => {
       Key: uniqueFilename,
     };
 
-    console.log(deleteParams);
-
     const command = new DeleteObjectCommand(deleteParams);
     await s3Client.send(command);
 
