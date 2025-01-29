@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Button, Form, Input, Checkbox } from 'antd';
+import { Typography, Button, Form, Input, Checkbox } from 'antd';
 import { getUser, updateUser } from 'api';
 import { EditOutlined, LockOutlined, CloseOutlined } from '@ant-design/icons';
 
@@ -72,7 +72,9 @@ const Settings = () => {
 
   return (
     <S.Wrapper>
-      <S.Header>Settings</S.Header>
+      <Typography.Title level={2} style={{ marginBottom: '32px' }}>
+        Settings
+      </Typography.Title>
       <Form
         name="settings"
         form={form}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Form, Input, Button } from 'antd';
+import { Typography, Form, Input, Button } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { useAuth } from 'hooks/useAuth';
 
@@ -36,7 +36,9 @@ const LoginForm = () => {
 
   return (
     <S.Wrapper>
-      <S.Header>Sign In</S.Header>
+      <Typography.Title level={1} style={{ marginBottom: '80px' }}>
+        Sign In
+      </Typography.Title>
       <Form
         layout="vertical"
         onFinish={handleLogin}

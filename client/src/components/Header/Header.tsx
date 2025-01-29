@@ -21,11 +21,22 @@ const notLoggedMenuItems: MenuProps['items'] = [
   },
 ];
 
-const Header = () => {
+type HeaderProps = {
+  setIsDarkMode: (value: React.SetStateAction<boolean>) => void;
+};
+
+const Header = ({ setIsDarkMode }: HeaderProps) => {
   const { isLoggedIn, logoutAction } = useAuth();
   const location = useLocation();
-
   const [currentPage, setCurrentPage] = useState<string>('');
+
+  const handleChangeTheme = () => {
+    setIsDarkMode((prev) => {
+      localStorage.setItem('darkMode', JSON.stringify(!prev));
+
+      return !prev;
+    });
+  };
 
   const loggedMenuItems: MenuProps['items'] = [
     {
@@ -60,7 +71,7 @@ const Header = () => {
   return (
     <S.Wrapper>
       <S.LoginMenu>
-        <Button>
+        <Button type="default" onClick={handleChangeTheme}>
           <BulbOutlined />
           Change Theme
         </Button>

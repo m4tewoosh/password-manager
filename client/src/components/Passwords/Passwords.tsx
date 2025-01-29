@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Input, Modal } from 'antd';
+import { Typography, Button, Input, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { deletePassword, getPasswords } from 'api';
 import { debounce } from 'utils/debounce';
@@ -65,7 +65,9 @@ const Passwords = () => {
 
   return (
     <S.Wrapper>
-      <S.Header>Passwords</S.Header>
+      <Typography.Title level={2} style={{ marginBottom: '32px' }}>
+        Passwords
+      </Typography.Title>
 
       <Button
         onClick={() => setIsNewPasswordModalOpen(true)}

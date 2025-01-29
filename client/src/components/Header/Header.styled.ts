@@ -1,16 +1,19 @@
+import { Layout } from 'antd';
 import { styled } from 'styled-components';
 
-export const Wrapper = styled.header`
+const { Header } = Layout;
+
+export const Wrapper = styled(Header)`
   position: fixed;
   top: 0;
-  height: 48px;
+  height: 64px;
   max-width: 100vw;
   width: 100%;
   display: flex;
   justify-content: flex-end;
-  background-color: #fff;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
-  padding: 0 16px 0 32px;
+  padding: unset;
+  padding-left: 16px;
 `;
 
 export const LoginMenu = styled.div`
@@ -18,6 +21,10 @@ export const LoginMenu = styled.div`
   flex: 1;
   justify-content: space-between;
   align-items: center;
+
+  .ant-menu {
+    border-bottom: none;
+  }
 `;
 
 export const LogoutWrapper = styled.div`

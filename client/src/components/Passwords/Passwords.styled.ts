@@ -14,12 +14,6 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const Header = styled.h2`
-  font-size: 38px;
-  font-weight: 600;
-  margin-bottom: 32px;
-`;
-
 export const PasswordsWrapper = styled.div`
   display: flex;
   flex-direction: column;

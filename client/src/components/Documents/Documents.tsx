@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Input, Modal } from 'antd';
+import { Typography, Button, Input, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { deleteDocument, getDocuments } from 'api';
 import { debounce } from 'utils/debounce';
@@ -54,7 +54,9 @@ const Documents = () => {
 
   return (
     <S.Wrapper>
-      <S.Header>Documents</S.Header>
+      <Typography.Title level={2} style={{ marginBottom: '32px' }}>
+        Documents
+      </Typography.Title>
 
       <Button
         onClick={() => setIsNewDocumentModalOpen(true)}

@@ -1,20 +1,24 @@
+import { Card } from 'antd';
 import { styled } from 'styled-components';
 
 const errorColor = '#FF4D4F';
 
-export const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+export const Wrapper = styled(Card)`
   width: 400px;
   height: 500px;
-  background: #fff;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
   padding: 80px 64px 0 64px;
 
-  > form {
-    width: 100%;
+  .ant-card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: unset;
+
+    > form {
+      width: 100%;
+    }
   }
 `;
 
@@ -46,13 +50,6 @@ export const InputsWrapper = styled.div`
   .ant-input-prefix {
     margin-right: 8px;
   }
-`;
-
-export const Header = styled.h1`
-  font-size: 32px;
-  font-weight: 600px;
-  color: #595959;
-  margin-bottom: 80px;
 `;
 
 export const Error = styled.p`

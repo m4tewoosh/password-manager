@@ -1,15 +1,24 @@
+import { Card } from 'antd';
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
+export const Wrapper = styled(Card)`
   width: 248px;
   height: 48px;
   border: 1px solid #d9d9d9;
   border-radius: 4px;
-  padding: 0 8px 0 16px;
+
+  .ant-card-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    height: 100%;
+
+    &:before,
+    &:after {
+      display: none;
+    }
+  }
 `;
 
 export const DocumentIcon = styled.img`
