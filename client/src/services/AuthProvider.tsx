@@ -42,8 +42,6 @@ const AuthProvider = ({
     try {
       setIsLoggedIn(false);
       await logoutUser();
-
-      navigate('/login', { replace: true });
     } catch (error) {
       throw new Error(error);
     }

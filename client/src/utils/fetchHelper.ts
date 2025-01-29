@@ -27,7 +27,6 @@ const sendRequest = async ({
     method: method,
     headers: {
       ...(contentType && { 'Content-Type': contentType }),
-      // 'Content-Type': body ? 'application/json' : 'plain/text',
     },
     body: body ? bodyParser(body) : null,
     credentials: 'include',
@@ -54,9 +53,13 @@ const sendRequest = async ({
     throw error;
   }
 
-  if (response.headers.get('content-type')?.includes('application/json')) {
-    return await response.json();
+  const responseData = await response.json();
+  if (responseData.redirectUrl) {
+    window.location.href = responseData.redirectUrl;
+    return;
   }
+
+  return responseData;
 };
 
 export default sendRequest;

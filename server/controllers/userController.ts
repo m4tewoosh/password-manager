@@ -1,15 +1,13 @@
 import { Response } from 'express';
 import User from '../models/user';
+const { comparePasswords, hashPassword } = require('../utils/password');
+const { logoutUser } = require('./authController');
 
-import { IGetUserAuthInfoRequest } from '../types';
+import { IGetUserAuthInfoRequest, UpdatedUserData } from '../types';
 
 const getUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
   try {
     const { id } = req.user;
-
-    // if (!id) {
-    //  what to do here, is it even possible?
-    // }
 
     const user = await User.findOne({ _id: id });
 
@@ -31,21 +29,56 @@ const getUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
 
 const updateUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
   try {
-    const { passwordsModuleOn, documentsModuleOn } = req.body;
     const { id } = req.user;
+    const {
+      passwordsModuleOn,
+      documentsModuleOn,
+      currentPassword,
+      newPassword,
+    } = req.body;
 
-    const updatedData = {
+    const updatedData: UpdatedUserData = {
       passwordsModuleOn,
       documentsModuleOn,
     };
 
-    const updatedUser = await User.findByIdAndUpdate(id, updatedData, {
-      new: true,
-    });
+    if (newPassword) {
+      // commented for testing purposes
+      // if (newPassword.length < 10) {
+      //   return res.status(400).json({
+      //     // 400: Bad request
+      //     error: "Field 'newPassword' must  have at least 10 characters",
+      //   });
+      // }
 
-    if (!updatedUser) {
-      // 404: Bad Request
-      return res.status(404).json({ message: 'User not found' });
+      const user = await User.findById(id);
+
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      const isCurrentPasswordValid = await comparePasswords(
+        currentPassword,
+        user.password
+      );
+
+      if (!isCurrentPasswordValid) {
+        return res.status(400).json({ error: 'Current password is incorrect' });
+      }
+
+      updatedData.password = await hashPassword(newPassword);
+    }
+
+    await User.findByIdAndUpdate(
+      id,
+      { $set: updatedData },
+      {
+        new: true,
+      }
+    );
+
+    if (updatedData.password) {
+      return logoutUser(req, res);
     }
 
     res

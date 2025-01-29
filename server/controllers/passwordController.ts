@@ -56,7 +56,7 @@ const savePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
 const updatePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
   try {
     const { id } = req.params;
-    const { password, name } = req.body;
+    const { name, username, password } = req.body;
 
     const user = await User.findOne({ _id: req.user.id });
 
@@ -83,7 +83,8 @@ const updatePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
     }
 
     const updatedData = {
-      ...req.body,
+      name,
+      username,
       password: encryptedPassword,
       faviconUrl: isValidUrl(name) ? faviconUrl : null,
     };
@@ -94,7 +95,7 @@ const updatePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
 
     if (!updatedPassword) {
       // 404: Bad Request
-      return res.status(404).json({ message: 'Document not found' });
+      return res.status(404).json({ error: 'Document not found' });
     }
 
     res

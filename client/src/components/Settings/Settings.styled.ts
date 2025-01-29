@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+const errorColor = '#FF4D4F';
+
 export const Wrapper = styled.div`
   display: flex;
   flex: 1;
@@ -22,11 +24,8 @@ export const Header = styled.h2`
 
 export const PasswordWrapper = styled.div`
   display: flex;
+  align-items: end;
   gap: 16px;
-
-  > .ant-form-item {
-    flex: 1;
-  }
 
   > button {
     .anticon {
@@ -39,8 +38,17 @@ export const InputsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 12px;
+  gap: 24px;
   margin-bottom: 64px;
+
+  .ant-form-item {
+    flex: 1;
+    margin-bottom: unset;
+
+    .ant-form-item-explain-error {
+      position: absolute;
+    }
+  }
 
   .ant-input-outlined {
     border-radius: 2px;
@@ -53,4 +61,9 @@ export const InputsWrapper = styled.div`
   .ant-input-prefix {
     margin-right: 8px;
   }
+`;
+
+export const Error = styled.p`
+  text-align: center;
+  color: ${errorColor};
 `;

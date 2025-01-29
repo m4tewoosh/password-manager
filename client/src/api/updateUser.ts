@@ -1,10 +1,27 @@
 import sendRequest from 'utils/fetchHelper';
 
-const updateUser = (passwordsModuleOn: boolean, documentsModuleOn: boolean) =>
+type UserSettings = {
+  passwordsModuleOn: boolean;
+  documentsModuleOn: boolean;
+  currentPassword?: string;
+  newPassword?: string;
+};
+
+const updateUser = ({
+  passwordsModuleOn,
+  documentsModuleOn,
+  currentPassword,
+  newPassword,
+}: UserSettings) =>
   sendRequest({
     method: 'PATCH',
     endpoint: 'user',
-    body: { passwordsModuleOn, documentsModuleOn },
+    body: {
+      passwordsModuleOn,
+      documentsModuleOn,
+      currentPassword,
+      newPassword,
+    },
     contentType: 'application/json',
   });
 

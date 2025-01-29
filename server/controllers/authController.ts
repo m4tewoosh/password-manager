@@ -58,7 +58,7 @@ const registerUser = async (req: Request, res: Response) => {
     // if (password.length < 10) {
     //   return res.status(400).json({
     //     // 400: Bad request
-    //     error: "Field 'password' must be have at least 10 characters",
+    //     error: "Field 'password' must  have at least 10 characters",
     //   });
     // }
 
@@ -157,7 +157,11 @@ const logoutUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
 
   await ValidRefreshToken.deleteMany({ userId: id });
 
-  res.clearCookie('accessToken').clearCookie('refreshToken').sendStatus(204); // 204: No Content
+  res
+    .clearCookie('accessToken')
+    .clearCookie('refreshToken')
+    .status(200)
+    .json({ message: 'Successfully logged out', redirectUrl: '/login' }); // 204: No Content
 };
 
 const authenticateToken = (
