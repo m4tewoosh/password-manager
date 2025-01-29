@@ -36,7 +36,7 @@ export const InputsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 12px;
+  gap: 16px;
   margin-bottom: 64px;
 
   .ant-input-outlined {

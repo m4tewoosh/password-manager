@@ -135,7 +135,7 @@ const PasswordForm = ({
             </Button>
           </S.PasswordWrapper>
 
-          <S.Error>{error}</S.Error>
+          {error && <S.Error>{error}</S.Error>}
           <Button
             htmlType="submit"
             loading={isLoading}

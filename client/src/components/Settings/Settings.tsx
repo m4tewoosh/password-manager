@@ -154,7 +154,7 @@ const Settings = () => {
           >
             <Checkbox>Documents module</Checkbox>
           </Form.Item>
-          <S.Error>{error}</S.Error>
+          {error && <S.Error>{error}</S.Error>}
 
           <Button
             htmlType="submit"
