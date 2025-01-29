@@ -60,8 +60,6 @@ const Settings = () => {
   const handleSaveSettings = async (values: FormValues) => {
     setIsLoading(true);
     try {
-      console.log(values);
-
       await updateUser(values);
       fetchUserData();
     } catch (error) {
