@@ -132,6 +132,8 @@ const Settings = () => {
               rules={[
                 {
                   required: isPasswordEdited,
+                  min: 10,
+                  max: 100,
                 },
               ]}
             >

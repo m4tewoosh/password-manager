@@ -1,6 +1,11 @@
 import { Response } from 'express';
 import User from '../models/user';
-const { comparePasswords, hashPassword } = require('../utils/password');
+const {
+  verifyMainPassword,
+  hashMainPassword,
+  deriveKEK,
+  encryptMasterKey,
+} = require('../utils/crypto');
 const { logoutUser } = require('./authController');
 
 import { IGetUserAuthInfoRequest, UpdatedUserData } from '../types';
@@ -43,13 +48,12 @@ const updateUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
     };
 
     if (newPassword) {
-      // commented for testing purposes
-      // if (newPassword.length < 10) {
-      //   return res.status(400).json({
-      //     // 400: Bad request
-      //     error: "Field 'newPassword' must  have at least 10 characters",
-      //   });
-      // }
+      if (newPassword.length < 10) {
+        return res.status(400).json({
+          // 400: Bad request
+          error: "Field 'newPassword' must  have at least 10 characters",
+        });
+      }
 
       const user = await User.findById(id);
 
@@ -57,16 +61,31 @@ const updateUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
         return res.status(404).json({ error: 'User not found' });
       }
 
-      const isCurrentPasswordValid = await comparePasswords(
+      const isCurrentPasswordValid = await verifyMainPassword(
         currentPassword,
-        user.password
+        user.passwordHash
       );
 
       if (!isCurrentPasswordValid) {
         return res.status(400).json({ error: 'Current password is incorrect' });
       }
 
-      updatedData.password = await hashPassword(newPassword);
+      const { masterKey } = req.session;
+
+      if (!masterKey) {
+        return logoutUser(req, res);
+      }
+
+      const kek = deriveKEK(newPassword, user.salt);
+      const { encryptedMasterKey, iv, tag } = encryptMasterKey(
+        Buffer.from(masterKey, 'base64'),
+        kek
+      );
+
+      updatedData.passwordHash = await hashMainPassword(newPassword);
+      updatedData.encryptedMasterKey = encryptedMasterKey;
+      updatedData.iv = iv;
+      updatedData.tag = tag;
     }
 
     await User.findByIdAndUpdate(
@@ -77,7 +96,7 @@ const updateUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
       }
     );
 
-    if (updatedData.password) {
+    if (updatedData.passwordHash) {
       return logoutUser(req, res);
     }
 

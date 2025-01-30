@@ -17,7 +17,10 @@ type Token = {
 type UpdatedUserData = {
   passwordsModuleOn: boolean;
   documentsModuleOn: boolean;
-  password?: string;
+  passwordHash?: string;
+  encryptedMasterKey?: string;
+  iv?: string;
+  tag?: string;
 };
 
 export { RequestUser, Token, IGetUserAuthInfoRequest, UpdatedUserData };

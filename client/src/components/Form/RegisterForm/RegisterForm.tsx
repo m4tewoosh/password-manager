@@ -40,7 +40,7 @@ const RegisterForm = () => {
   return (
     <S.Wrapper>
       <Typography.Title level={1} style={{ marginBottom: '80px' }}>
-        Sign In
+        Sign Up
       </Typography.Title>
       <Form
         layout="vertical"
@@ -71,8 +71,7 @@ const RegisterForm = () => {
             rules={[
               {
                 required: true,
-                // commented for testing purposes
-                // min: 10,
+                min: 10,
                 max: 100,
               },
             ]}

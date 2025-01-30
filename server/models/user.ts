@@ -2,10 +2,13 @@ import { model, Schema, Types } from 'mongoose';
 
 interface IUser {
   email: string;
-  documentsModuleOn: boolean;
-  password: string;
-  passwordsModuleOn: boolean;
+  passwordHash: string;
+  encryptedMasterKey: string;
   salt: string;
+  iv: string;
+  tag: string;
+  passwordsModuleOn: boolean;
+  documentsModuleOn: boolean;
 }
 
 const userSchema = new Schema<IUser>({
@@ -14,10 +17,13 @@ const userSchema = new Schema<IUser>({
     unique: true,
     required: true,
   },
-  documentsModuleOn: { type: Boolean, required: true },
-  password: { type: String, required: true },
-  passwordsModuleOn: { type: Boolean, required: true },
+  passwordHash: { type: String, required: true },
+  encryptedMasterKey: { type: String, required: true },
   salt: { type: String, required: true },
+  iv: { type: String, required: true },
+  tag: { type: String, required: true },
+  passwordsModuleOn: { type: Boolean, required: true },
+  documentsModuleOn: { type: Boolean, required: true },
 });
 
 const UserModel = model('User', userSchema);

@@ -97,7 +97,7 @@ const getAllDocuments = async (req: IGetUserAuthInfoRequest, res: Response) => {
     const user = await User.findOne({ _id: id });
 
     if (!user) {
-      return res.status(404).json({
+      return res.status(400).json({
         // 404: Bad request
         error: 'Bad request',
       });

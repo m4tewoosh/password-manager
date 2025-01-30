@@ -54,6 +54,7 @@ const sendRequest = async ({
   }
 
   const responseData = await response.json();
+
   if (responseData.redirectUrl) {
     window.location.href = responseData.redirectUrl;
     return;

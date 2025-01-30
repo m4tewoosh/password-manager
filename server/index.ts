@@ -1,9 +1,14 @@
 import express from 'express';
 import mongoose from 'mongoose';
-require('dotenv').config();
+import session from 'express-session';
+import crypto from 'crypto';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
 
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
+dotenv.config();
+
+// const cors = require('cors');
 
 const authRoutes = require('./routes/authRoutes');
 const documentRoutes = require('./routes/documentRoutes');
@@ -11,6 +16,12 @@ const passwordRoutes = require('./routes/passwordRoutes');
 const userRoutes = require('./routes/userRoutes');
 
 const app = express();
+
+declare module 'express-session' {
+  export interface SessionData {
+    masterKey: string;
+  }
+}
 
 // db connection
 mongoose
@@ -22,6 +33,20 @@ mongoose
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false })); // what extended means?
+app.use(
+  session({
+    name: 'sid',
+    secret: crypto.randomBytes(64).toString('hex'), // Rotuj regularnie!
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000, // max age set to 24 hours ( hours * minutes * seconds * milliseconds)
+      httpOnly: true,
+      // secure: add for prod environment
+      // sameSite: to check
+    },
+  })
+);
 
 // cors
 app.use(

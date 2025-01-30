@@ -1,5 +1,6 @@
 import { ReactElement, useState, useLayoutEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { message } from 'antd';
 import { authorizeUser, loginUser, logoutUser, registerUser } from 'api';
 import { AuthContext } from 'context/AuthContext';
 
@@ -17,10 +18,8 @@ const AuthProvider = ({
     try {
       await registerUser(email, password);
 
-      setIsLoggedIn(true);
-      localStorage.setItem('isLoggedIn', 'true');
-
-      navigate('/dashboard');
+      message.success('Successfully registered! Please log in');
+      navigate('/login');
     } catch (error) {
       throw new Error(error);
     }

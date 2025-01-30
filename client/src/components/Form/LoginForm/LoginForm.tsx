@@ -65,7 +65,7 @@ const LoginForm = () => {
 
           <Form.Item
             name="password"
-            initialValue="a" // added for testing purposes
+            initialValue="1234567890" // added for testing purposes
             messageVariables={{ label: 'Password' }}
             rules={[
               {
