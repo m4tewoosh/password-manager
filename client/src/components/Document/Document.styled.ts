@@ -3,8 +3,7 @@ import styled from 'styled-components';
 
 export const Wrapper = styled(Card)`
   width: 248px;
-  height: 48px;
-  border: 1px solid #d9d9d9;
+  min-height: 48px;
   border-radius: 4px;
 
   .ant-card-body {
@@ -27,7 +26,7 @@ export const DocumentIcon = styled.img`
 `;
 
 export const DocumentName = styled.p`
-  max-width: 112px;
+  max-width: 104px;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 14px;

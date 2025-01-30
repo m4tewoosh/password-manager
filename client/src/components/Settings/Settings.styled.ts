@@ -8,6 +8,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   justify-content: start;
   align-items: center;
+  max-width: 300px;
 
   padding-top: calc(48px + 48px);
 
@@ -18,10 +19,12 @@ export const Wrapper = styled.div`
 
 export const PasswordWrapper = styled.div`
   display: flex;
-  align-items: end;
+  align-items: start;
   gap: 16px;
 
   > button {
+    margin-block-start: 30px;
+
     .anticon {
       color: white;
     }
@@ -33,15 +36,10 @@ export const InputsWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   gap: 24px;
-  margin-bottom: 64px;
 
   .ant-form-item {
     flex: 1;
     margin-bottom: unset;
-
-    .ant-form-item-explain-error {
-      position: absolute;
-    }
   }
 
   .ant-input-outlined {

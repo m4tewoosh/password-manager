@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Typography, Form, Input, Button } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
-import { useAuth } from 'hooks/useAuth';
+import { useAuth } from 'hooks';
 
 import * as S from '../AuthForm.styled';
 

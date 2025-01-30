@@ -19,4 +19,6 @@ export const DocumentsWrapper = styled.div`
   flex-direction: column;
   gap: 16px;
   margin-top: 32px;
+  max-height: 436px;
+  overflow-y: scroll;
 `;

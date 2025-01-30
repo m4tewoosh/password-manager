@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button, Menu, MenuProps } from 'antd';
 import {
-  BulbOutlined,
+  SunOutlined,
+  MoonOutlined,
   LogoutOutlined,
   SettingOutlined,
+  AppstoreOutlined,
 } from '@ant-design/icons';
-import { useAuth } from 'hooks/useAuth';
+import { useAuth, useMobile } from 'hooks';
 
 import * as S from './Header.styled';
 
@@ -22,12 +24,14 @@ const notLoggedMenuItems: MenuProps['items'] = [
 ];
 
 type HeaderProps = {
+  isDarkMode: boolean;
   setIsDarkMode: (value: React.SetStateAction<boolean>) => void;
 };
 
-const Header = ({ setIsDarkMode }: HeaderProps) => {
+const Header = ({ isDarkMode, setIsDarkMode }: HeaderProps) => {
   const { isLoggedIn, logoutAction } = useAuth();
   const location = useLocation();
+  const isMobile = useMobile();
   const [currentPage, setCurrentPage] = useState<string>('');
 
   const handleChangeTheme = () => {
@@ -41,13 +45,31 @@ const Header = ({ setIsDarkMode }: HeaderProps) => {
   const loggedMenuItems: MenuProps['items'] = [
     {
       key: 'dashboard',
-      label: <Link to="/dashboard">Dashboard</Link>,
+      label: (
+        <Link to="/dashboard">
+          {!isMobile ? (
+            <S.LogoutWrapper>
+              <AppstoreOutlined />
+              Dashboard
+            </S.LogoutWrapper>
+          ) : (
+            <AppstoreOutlined />
+          )}
+        </Link>
+      ),
     },
     {
       key: 'settings',
       label: (
         <Link to="/settings">
-          <SettingOutlined />
+          {!isMobile ? (
+            <S.LogoutWrapper>
+              <SettingOutlined />
+              Settings
+            </S.LogoutWrapper>
+          ) : (
+            <SettingOutlined />
+          )}
         </Link>
       ),
     },
@@ -55,10 +77,14 @@ const Header = ({ setIsDarkMode }: HeaderProps) => {
       key: 'logout',
       label: (
         <Link onClick={logoutAction} to="#">
-          <S.LogoutWrapper>
-            Logout
+          {!isMobile ? (
+            <S.LogoutWrapper>
+              <LogoutOutlined />
+              Logout
+            </S.LogoutWrapper>
+          ) : (
             <LogoutOutlined />
-          </S.LogoutWrapper>
+          )}
         </Link>
       ),
     },
@@ -72,8 +98,8 @@ const Header = ({ setIsDarkMode }: HeaderProps) => {
     <S.Wrapper>
       <S.LoginMenu>
         <Button type="default" onClick={handleChangeTheme}>
-          <BulbOutlined />
-          Change Theme
+          {isDarkMode ? <SunOutlined /> : <MoonOutlined />}
+          {!isMobile && 'Change Theme'}
         </Button>
         <Menu
           disabledOverflow

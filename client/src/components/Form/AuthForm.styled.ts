@@ -20,6 +20,10 @@ export const Wrapper = styled(Card)`
       width: 100%;
     }
   }
+
+  @media (max-width: 768px) {
+    width: 90%;
+  }
 `;
 
 export const FormWrapper = styled.div`

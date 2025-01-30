@@ -12,8 +12,13 @@ const layoutStyle = {
   alignItems: 'center',
 };
 
+const colorPrimary = '#1677ff';
+
 const lightTheme = {
   algorithm: theme.defaultAlgorithm,
+  token: {
+    colorPrimary,
+  },
   components: {
     Layout: {
       headerBg: '#fff',
@@ -22,9 +27,13 @@ const lightTheme = {
 };
 const darkTheme = {
   algorithm: theme.darkAlgorithm,
+  token: {
+    colorPrimary,
+  },
   components: {
     Layout: {
       headerBg: '#141414',
+      colorBgLayout: '#1d1f26',
     },
   },
 };
@@ -44,7 +53,7 @@ const Root = () => {
     <AuthProvider>
       <RootWrapper>
         <ConfigProvider theme={isDarkMode ? darkTheme : lightTheme}>
-          <Header setIsDarkMode={setIsDarkMode} />
+          <Header isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
           <Layout style={layoutStyle}>
             <Outlet />
           </Layout>

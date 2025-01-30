@@ -4,7 +4,6 @@ import styled from 'styled-components';
 export const Wrapper = styled(Card)`
   width: 248px;
   height: 48px;
-  border: 1px solid #d9d9d9;
   border-radius: 4px;
 
   .ant-card-body {

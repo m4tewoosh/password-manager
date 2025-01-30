@@ -5,7 +5,7 @@ export const ModuleCard = styled(Card)`
   width: 240px;
   height: 240px;
   border-radius: 30px;
-  box-shadow: 0px 0px 20px 0px #00000033;
+  box-shadow: 0px 0px 15px 0px #00000033;
 
   .ant-card-body {
     display: flex;
