@@ -98,7 +98,6 @@ const getAllDocuments = async (req: IGetUserAuthInfoRequest, res: Response) => {
 
     if (!user) {
       return res.status(400).json({
-        // 404: Bad request
         error: 'Bad request',
       });
     }
@@ -108,7 +107,7 @@ const getAllDocuments = async (req: IGetUserAuthInfoRequest, res: Response) => {
       { readableFilename: 1, id: 1 }
     );
 
-    res.status(200).json(documents); // 200: OK
+    res.status(200).json(documents);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred' });
@@ -123,7 +122,6 @@ const downloadDocument = async (req: Request, res: Response) => {
 
     if (!document) {
       return res.status(404).json({
-        // 404: Bad request
         error: 'Document not found',
       });
     }
@@ -154,7 +152,6 @@ const deleteDocument = async (req: Request, res: Response) => {
 
     if (!document) {
       return res.status(404).json({
-        // 404: Bad request
         error: 'Document not found',
       });
     }
@@ -171,7 +168,7 @@ const deleteDocument = async (req: Request, res: Response) => {
 
     await Document.findByIdAndDelete(id);
 
-    res.status(200).json({ message: 'Successfully deleted document' }); // 200: OK
+    res.status(200).json({ message: 'Successfully deleted document' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred' });

@@ -40,9 +40,7 @@ const savePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
       tag,
     });
 
-    res
-      .status(201) // 201: Created
-      .json(newPassword);
+    res.status(201).json(newPassword);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred' });
@@ -90,13 +88,10 @@ const updatePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
     });
 
     if (!updatedPassword) {
-      // 404: Bad Request
       return res.status(404).json({ error: 'Document not found' });
     }
 
-    res
-      .status(200) // 200: OK
-      .json(updatedPassword);
+    res.status(200).json(updatedPassword);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred' });
@@ -109,20 +104,11 @@ const deletePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
 
     const user = await User.findOne({ _id: req.user.id });
 
-    // why need to check user?
-    if (!user) {
-      return res.status(400).json({
-        // 404: Bad request
-        error: 'Bad request',
-      });
-    }
-
     await Password.findByIdAndDelete(id);
 
-    res.status(200).json({ message: 'Successfully deleted password' }); // 200: OK
+    res.status(200).json({ message: 'Successfully deleted password' });
   } catch (error) {
     console.error(error);
-    // 500: Internal Server Error
     res.status(500).json({ error: 'An error occurred' });
   }
 };
@@ -135,12 +121,11 @@ const getAllPasswords = async (req: IGetUserAuthInfoRequest, res: Response) => {
 
     if (!user) {
       return res.status(400).json({
-        // 404: Bad request
         error: 'Bad request',
       });
     }
 
-    const passwords = await Password.find({ userId: id }); // Retrieve all documents in the Password collection
+    const passwords = await Password.find({ userId: id });
 
     const { masterKey } = req.session;
 
@@ -167,7 +152,7 @@ const getAllPasswords = async (req: IGetUserAuthInfoRequest, res: Response) => {
       }
     );
 
-    res.status(200).json(decryptedPasswords); // 200: OK
+    res.status(200).json(decryptedPasswords);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred' });

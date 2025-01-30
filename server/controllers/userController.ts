@@ -17,11 +17,10 @@ const getUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
     const user = await User.findOne({ _id: id });
 
     if (!user) {
-      return res.status(404).json({ error: 'User not found' }); // 404: Not found
+      return res.status(404).json({ error: 'User not found' });
     }
 
     res.status(200).json({
-      // 200: OK
       email: user.email,
       passwordsModuleOn: user.passwordsModuleOn,
       documentsModuleOn: user.documentsModuleOn,
@@ -50,7 +49,6 @@ const updateUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
     if (newPassword) {
       if (newPassword.length < 10) {
         return res.status(400).json({
-          // 400: Bad request
           error: "Field 'newPassword' must  have at least 10 characters",
         });
       }
@@ -100,9 +98,7 @@ const updateUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
       return logoutUser(req, res);
     }
 
-    res
-      .status(200) // 200: OK
-      .json({ message: 'Successfully updated user' });
+    res.status(200).json({ message: 'Successfully updated user' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred' });

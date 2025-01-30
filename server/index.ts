@@ -5,23 +5,19 @@ import crypto from 'crypto';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
-
-dotenv.config();
-
-// const cors = require('cors');
-
 const authRoutes = require('./routes/authRoutes');
 const documentRoutes = require('./routes/documentRoutes');
 const passwordRoutes = require('./routes/passwordRoutes');
 const userRoutes = require('./routes/userRoutes');
-
-const app = express();
 
 declare module 'express-session' {
   export interface SessionData {
     masterKey: string;
   }
 }
+
+dotenv.config();
+const app = express();
 
 // db connection
 mongoose
@@ -32,11 +28,11 @@ mongoose
 // middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: false })); // what extended means?
+app.use(express.urlencoded({ extended: false }));
 app.use(
   session({
     name: 'sid',
-    secret: crypto.randomBytes(64).toString('hex'), // Rotuj regularnie!
+    secret: crypto.randomBytes(64).toString('hex'),
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -51,7 +47,7 @@ app.use(
 // cors
 app.use(
   cors({
-    origin: process.env.ALLOWED_ORIGIN, // Frontend React app
+    origin: process.env.ALLOWED_ORIGIN, // Frontend testing React app
     credentials: true, // Allow cookies (necessary for httpOnly cookies)
   })
 );

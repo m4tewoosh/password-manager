@@ -26,21 +26,18 @@ const registerUser = async (req: Request, res: Response) => {
 
     if (!email) {
       return res.status(400).json({
-        // 400: Bad request
         error: "Field 'email' is required",
       });
     }
 
     if (!password) {
       return res.status(400).json({
-        // 400: Bad request
         error: "Field 'password' is required",
       });
     }
 
     if (password.length < 10) {
       return res.status(400).json({
-        // 400: Bad request
         error: "Field 'password' must  have at least 10 characters",
       });
     }
@@ -49,7 +46,6 @@ const registerUser = async (req: Request, res: Response) => {
 
     if (isEmailTaken) {
       return res.status(409).json({
-        // 409: Conflict
         error: 'Email is already taken',
       });
     }
@@ -72,7 +68,7 @@ const registerUser = async (req: Request, res: Response) => {
     });
 
     res
-      .status(201) // 201: Created
+      .status(201)
 
       .json({ id: user._id });
   } catch (error) {
@@ -90,7 +86,6 @@ const loginUser = async (req: Request, res: Response) => {
 
     if (!user) {
       return res.status(401).json({
-        // 401: Unauthorized
         error: 'Bad credentials',
       });
     }
@@ -102,7 +97,6 @@ const loginUser = async (req: Request, res: Response) => {
 
     if (!isPasswordCorrect) {
       return res.status(401).json({
-        // 401: Unauthorized
         error: 'Bad credentials',
       });
     }
@@ -169,7 +163,7 @@ const authenticateToken = (
   const { accessToken } = req.cookies;
 
   if (!accessToken) {
-    return res.status(401).json({ error: 'No access token provided' }); // 401: Unauthorized
+    return res.status(401).json({ error: 'No access token provided' });
   }
 
   jwt.verify(
@@ -181,7 +175,7 @@ const authenticateToken = (
         return res
           .status(401)
           .clearCookie('accessToken')
-          .json({ error: 'Access token is invalid or expired' }); // 401: Unathorized
+          .json({ error: 'Access token is invalid or expired' });
       }
 
       req.user = user;
@@ -195,7 +189,7 @@ const refreshToken = async (req: Request, res: Response) => {
   const { refreshToken } = req.cookies;
 
   if (!refreshToken) {
-    return res.status(401).json({ error: 'No refresh token provided' }); // 401: Unauthorized - shouldnt be 403?
+    return res.status(401).json({ error: 'No refresh token provided' });
   }
 
   jwt.verify(
@@ -207,7 +201,7 @@ const refreshToken = async (req: Request, res: Response) => {
         return res
           .status(403)
           .clearCookie('refreshToken')
-          .json({ error: 'Refresh token is invalid or expired' }); // 403: Forbidden
+          .json({ error: 'Refresh token is invalid or expired' });
       }
 
       const isRefreshTokenWhitelisted = await ValidRefreshToken.findOne({
@@ -218,7 +212,7 @@ const refreshToken = async (req: Request, res: Response) => {
         return res
           .status(403)
           .clearCookie('refreshToken')
-          .json({ error: 'Refresh token is invalid or expired' }); // 403: Forbidden
+          .json({ error: 'Refresh token is invalid or expired' });
       }
 
       await ValidRefreshToken.deleteOne({ jti: token.jti });
