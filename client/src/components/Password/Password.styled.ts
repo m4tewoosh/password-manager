@@ -35,6 +35,10 @@ export const PasswordData = styled.div`
 
   > span {
     font-size: 12px;
+    max-width: 88px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &:first-child {
       border-bottom: 1px solid #d9d9d9;
@@ -45,7 +49,7 @@ export const PasswordData = styled.div`
 export const DataWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 24px;
 
   svg {
     font-size: 24px;

@@ -1,4 +1,4 @@
-import { message } from 'antd';
+import { message, Tooltip } from 'antd';
 import { blue, red, gray } from '@ant-design/colors';
 
 import {
@@ -35,8 +35,12 @@ const Password = ({ password, handleEdit, handleDelete }: PasswordProps) => {
       <S.DataWrapper>
         {faviconUrl ? <S.WebsiteIcon src={faviconUrl} /> : <GlobalOutlined />}
         <S.PasswordData>
-          <span>{name}</span>
-          <span>{username}</span>
+          <Tooltip title={name}>
+            <span>{name}</span>
+          </Tooltip>
+          <Tooltip title={username} placement="bottom">
+            <span>{username}</span>
+          </Tooltip>
         </S.PasswordData>
       </S.DataWrapper>
 
