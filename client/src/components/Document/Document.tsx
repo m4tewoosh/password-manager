@@ -1,11 +1,9 @@
+import { useMemo } from 'react';
 import { message, Tooltip } from 'antd';
 import { red, gray } from '@ant-design/colors';
-import {
-  FilePdfOutlined,
-  DownloadOutlined,
-  DeleteOutlined,
-} from '@ant-design/icons';
+import { DownloadOutlined, DeleteOutlined } from '@ant-design/icons';
 import { downloadDocument } from 'api';
+import { getDocumentIcon } from 'utils/document';
 
 import { DocumentType } from 'types/document';
 import * as S from './Document.styled';
@@ -36,15 +34,19 @@ const Document = ({ document, handleDelete }: DocumentProps) => {
     }
   };
 
+  const IconComponent = useMemo(
+    () => getDocumentIcon(readableFilename),
+    [readableFilename]
+  );
+
   return (
     <S.Wrapper>
       <S.DataWrapper>
-        <FilePdfOutlined />
+        <IconComponent />
         <Tooltip title={readableFilename}>
           <S.DocumentName>{readableFilename}</S.DocumentName>
         </Tooltip>
       </S.DataWrapper>
-
       <S.ActionsWrapper>
         <button onClick={handleDownloadDocument}>
           <DownloadOutlined style={{ color: gray[6] }} />
