@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { randomUUID } from 'crypto';
+const jwt = require('jsonwebtoken');
 import User from '../models/user';
 import ValidRefreshToken from '../models/validRefreshToken';
 const {
@@ -9,32 +9,9 @@ const {
   accessTokenCookieMaxAge,
   refreshTokenCookieMaxAge,
 } = require('../utils/password');
-const jwt = require('jsonwebtoken');
+const { generateAccessToken, generateRefreshToken } = require('../utils/token');
 
 import { RequestUser, Token, IGetUserAuthInfoRequest } from '../types';
-
-const generateAccessToken = (id: string) => {
-  return jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: '5m',
-  });
-};
-
-const generateRefreshToken = async (id: string) => {
-  try {
-    const jti = randomUUID();
-    const payload = { id, jti };
-
-    const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
-      expiresIn: '7d',
-    });
-
-    await ValidRefreshToken.create({ userId: id, jti });
-
-    return refreshToken;
-  } catch (error) {
-    throw new Error(`Error creating refresh token`);
-  }
-};
 
 const registerUser = async (req: Request, res: Response) => {
   try {
