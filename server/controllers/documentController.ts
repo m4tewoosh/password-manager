@@ -1,18 +1,19 @@
 import { Request, Response } from 'express';
+import dotenv from 'dotenv';
+import { randomUUID } from 'crypto';
+import path from 'path';
+import sanitize from 'sanitize-filename';
 import {
   S3Client,
   PutObjectCommand,
   GetObjectCommand,
   DeleteObjectCommand,
 } from '@aws-sdk/client-s3';
-const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
-import { randomUUID } from 'crypto';
-import path from 'path';
-import sanitize from 'sanitize-filename';
-import Document from '../models/document';
-import User from '../models/user';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
-import { IGetUserAuthInfoRequest } from '../types';
+import { Document, User } from '../models';
+
+dotenv.config();
 
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,
@@ -40,7 +41,7 @@ const acceptedFileTypes = [
   '.json',
 ];
 
-const saveDocument = async (req: IGetUserAuthInfoRequest, res: Response) => {
+const saveDocument = async (req: Request, res: Response): Promise<any> => {
   try {
     const {
       file,
@@ -90,7 +91,7 @@ const saveDocument = async (req: IGetUserAuthInfoRequest, res: Response) => {
   }
 };
 
-const getAllDocuments = async (req: IGetUserAuthInfoRequest, res: Response) => {
+const getAllDocuments = async (req: Request, res: Response): Promise<any> => {
   try {
     const { id } = req.user;
 
@@ -114,7 +115,7 @@ const getAllDocuments = async (req: IGetUserAuthInfoRequest, res: Response) => {
   }
 };
 
-const downloadDocument = async (req: Request, res: Response) => {
+const downloadDocument = async (req: Request, res: Response): Promise<any> => {
   try {
     const { id } = req.params;
 
@@ -144,7 +145,7 @@ const downloadDocument = async (req: Request, res: Response) => {
   }
 };
 
-const deleteDocument = async (req: Request, res: Response) => {
+const deleteDocument = async (req: Request, res: Response): Promise<any> => {
   try {
     const { id } = req.params;
 
@@ -175,9 +176,4 @@ const deleteDocument = async (req: Request, res: Response) => {
   }
 };
 
-module.exports = {
-  saveDocument,
-  getAllDocuments,
-  downloadDocument,
-  deleteDocument,
-};
+export { saveDocument, getAllDocuments, downloadDocument, deleteDocument };

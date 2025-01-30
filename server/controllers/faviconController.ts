@@ -33,6 +33,4 @@ const extractFaviconURL = async (websiteUrl: string) => {
   }
 };
 
-module.exports = {
-  extractFaviconURL,
-};
+export { extractFaviconURL };

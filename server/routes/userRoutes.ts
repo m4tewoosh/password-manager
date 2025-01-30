@@ -1,10 +1,10 @@
-import express from 'express';
-const { authenticateToken } = require('../controllers/authController');
-const { getUser, updateUser } = require('../controllers/userController');
+import { Router } from 'express';
+import { authenticateToken } from '../controllers/authController';
+import { getUser, updateUser } from '../controllers/userController';
 
-const router = express.Router();
+const router = Router();
 
 router.get('/', authenticateToken, getUser);
 router.patch('/', authenticateToken, updateUser);
 
-module.exports = router;
+export default router;

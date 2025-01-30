@@ -1,14 +1,14 @@
-import express from 'express';
+import { Router } from 'express';
 import multer from 'multer';
-const { authenticateToken } = require('../controllers/authController');
-const {
+import { authenticateToken } from '../controllers/authController';
+import {
   saveDocument,
   getAllDocuments,
   downloadDocument,
   deleteDocument,
-} = require('../controllers/documentController');
+} from '../controllers/documentController';
 
-const router = express.Router();
+const router = Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
@@ -17,4 +17,4 @@ router.post('/', authenticateToken, upload.single('file'), saveDocument);
 router.get('/:id', authenticateToken, downloadDocument);
 router.delete('/:id', authenticateToken, deleteDocument);
 
-module.exports = router;
+export default router;

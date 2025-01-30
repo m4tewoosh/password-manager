@@ -1,16 +1,17 @@
-import { Response } from 'express';
-import User from '../models/user';
-const {
+import { Request, Response } from 'express';
+import { logoutUser } from './authController';
+import {
   verifyMainPassword,
   hashMainPassword,
   deriveKEK,
   encryptMasterKey,
-} = require('../utils/crypto');
-const { logoutUser } = require('./authController');
+} from '../utils/crypto';
 
-import { IGetUserAuthInfoRequest, UpdatedUserData } from '../types';
+import { User } from '../models';
 
-const getUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
+import { UpdatedUserData } from '../types';
+
+const getUser = async (req: Request, res: Response): Promise<any> => {
   try {
     const { id } = req.user;
 
@@ -20,18 +21,18 @@ const getUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       email: user.email,
       passwordsModuleOn: user.passwordsModuleOn,
       documentsModuleOn: user.documentsModuleOn,
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'An error occurred' });
+    return res.status(500).json({ error: 'An error occurred' });
   }
 };
 
-const updateUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
+const updateUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.user;
     const {
@@ -98,14 +99,11 @@ const updateUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
       return logoutUser(req, res);
     }
 
-    res.status(200).json({ message: 'Successfully updated user' });
+    return res.status(200).json({ message: 'Successfully updated user' });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'An error occurred' });
+    return res.status(500).json({ error: 'An error occurred' });
   }
 };
 
-module.exports = {
-  getUser,
-  updateUser,
-};
+export { getUser, updateUser };

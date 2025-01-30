@@ -5,10 +5,13 @@ import crypto from 'crypto';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
-const authRoutes = require('./routes/authRoutes');
-const documentRoutes = require('./routes/documentRoutes');
-const passwordRoutes = require('./routes/passwordRoutes');
-const userRoutes = require('./routes/userRoutes');
+
+import {
+  authRoutes,
+  documentRoutes,
+  passwordRoutes,
+  userRoutes,
+} from './routes';
 
 declare module 'express-session' {
   export interface SessionData {
@@ -16,12 +19,23 @@ declare module 'express-session' {
   }
 }
 
-dotenv.config();
+declare global {
+  namespace Express {
+    interface Request {
+      user: {
+        email: string;
+        id: string;
+      };
+    }
+  }
+}
+
 const app = express();
+dotenv.config();
 
 // db connection
 mongoose
-  .connect(process.env.MONGO_URL as string)
+  .connect(process.env.MONGO_URL!)
   .then(() => console.log('db connected'))
   .catch((error: unknown) => console.log('db error', error));
 

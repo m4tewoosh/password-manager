@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-const jwt = require('jsonwebtoken');
-import User from '../models/user';
-import ValidRefreshToken from '../models/validRefreshToken';
+import jwt, { VerifyErrors } from 'jsonwebtoken';
+
 import {
   generateMasterKey,
   generateSalt,
@@ -18,9 +17,9 @@ import {
   REFRESH_TOKEN_COOKIE_MAX_AGE,
 } from '../utils/token';
 
-import { RequestUser, Token, IGetUserAuthInfoRequest } from '../types';
+import { User, ValidRefreshToken } from '../models';
 
-const registerUser = async (req: Request, res: Response) => {
+const registerUser = async (req: Request, res: Response): Promise<any> => {
   try {
     const { email, password } = req.body;
 
@@ -67,17 +66,14 @@ const registerUser = async (req: Request, res: Response) => {
       documentsModuleOn: true,
     });
 
-    res
-      .status(201)
-
-      .json({ id: user._id });
+    return res.status(201).json({ id: user._id });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'An error occurred' });
+    return res.status(500).json({ error: 'An error occurred' });
   }
 };
 
-const loginUser = async (req: Request, res: Response) => {
+const loginUser = async (req: Request, res: Response): Promise<any> => {
   try {
     const { email, password } = req.body;
 
@@ -114,7 +110,7 @@ const loginUser = async (req: Request, res: Response) => {
     const accessToken = generateAccessToken(String(user._id));
     const refreshToken = await generateRefreshToken(String(user._id));
 
-    res
+    return res
       .cookie('accessToken', accessToken, {
         maxAge: ACCESS_TOKEN_COOKIE_MAX_AGE,
         httpOnly: true,
@@ -130,11 +126,11 @@ const loginUser = async (req: Request, res: Response) => {
       .json({ id: user._id });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'An error occurred' });
+    return res.status(500).json({ error: 'An error occurred' });
   }
 };
 
-const logoutUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
+const logoutUser = async (req: Request, res: Response): Promise<any> => {
   const { id } = req.user;
 
   await ValidRefreshToken.deleteMany({ userId: id });
@@ -156,94 +152,124 @@ const logoutUser = async (req: IGetUserAuthInfoRequest, res: Response) => {
 };
 
 const authenticateToken = (
-  req: IGetUserAuthInfoRequest,
+  req: Request,
   res: Response,
   next: NextFunction
-) => {
-  const { accessToken } = req.cookies;
+): void => {
+  try {
+    const { accessToken } = req.cookies;
 
-  if (!accessToken) {
-    return res.status(401).json({ error: 'No access token provided' });
-  }
-
-  jwt.verify(
-    accessToken,
-    process.env.ACCESS_TOKEN_SECRET,
-    {},
-    (error: Error, user: RequestUser) => {
-      if (error) {
-        return res
-          .status(401)
-          .clearCookie('accessToken')
-          .json({ error: 'Access token is invalid or expired' });
-      }
-
-      req.user = user;
-
-      next();
+    if (!accessToken) {
+      res.status(401).json({ error: 'No access token provided' });
+      return;
     }
-  );
+
+    const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
+
+    if (!accessTokenSecret) {
+      throw new Error(
+        'ACCESS_TOKEN_SECRET is not defined in the environment variables'
+      );
+    }
+
+    jwt.verify(
+      accessToken,
+      accessTokenSecret,
+      {},
+      (error: VerifyErrors | null, user: any) => {
+        if (error) {
+          res
+            .status(401)
+            .clearCookie('accessToken')
+            .json({ error: 'Access token is invalid or expired' });
+          return;
+        }
+
+        req.user = user;
+        next();
+      }
+    );
+  } catch (error) {
+    console.error('Error in authenticateToken:', error);
+    res
+      .status(500)
+      .json({ error: 'An unexpected error occurred during authentication' });
+  }
 };
 
-const refreshToken = async (req: Request, res: Response) => {
-  const { refreshToken } = req.cookies;
+const refreshToken = async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { refreshToken } = req.cookies;
 
-  if (!refreshToken) {
-    return res.status(401).json({ error: 'No refresh token provided' });
-  }
-
-  jwt.verify(
-    refreshToken,
-    process.env.REFRESH_TOKEN_SECRET,
-    {},
-    async (error: Error, token: Token) => {
-      if (error) {
-        return res
-          .status(403)
-          .clearCookie('refreshToken')
-          .json({ error: 'Refresh token is invalid or expired' });
-      }
-
-      const isRefreshTokenWhitelisted = await ValidRefreshToken.findOne({
-        jti: token.jti,
-      });
-
-      if (!isRefreshTokenWhitelisted) {
-        return res
-          .status(403)
-          .clearCookie('refreshToken')
-          .json({ error: 'Refresh token is invalid or expired' });
-      }
-
-      await ValidRefreshToken.deleteOne({ jti: token.jti });
-
-      const newAccessToken = generateAccessToken(token.id);
-      const newRefreshToken = await generateRefreshToken(token.id);
-
-      res
-        .status(200)
-        .cookie('accessToken', newAccessToken, {
-          maxAge: ACCESS_TOKEN_COOKIE_MAX_AGE,
-          httpOnly: true,
-          // secure: // add for prod environment
-          // sameSite: // to check
-        })
-        .cookie('refreshToken', newRefreshToken, {
-          maxAge: REFRESH_TOKEN_COOKIE_MAX_AGE,
-          httpOnly: true,
-          // secure: // add for prod environment
-          // sameSite: // to check
-        })
-        .json({ message: 'Access token refreshed' });
+    if (!refreshToken) {
+      return res.status(401).json({ error: 'No refresh token provided' });
     }
-  );
+
+    const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
+
+    if (!refreshTokenSecret) {
+      throw new Error(
+        'ACCESS_TOKEN_SECRET is not defined in the environment variables'
+      );
+    }
+    jwt.verify(
+      refreshToken,
+      refreshTokenSecret,
+      {},
+      async (error: VerifyErrors | null, token: any) => {
+        if (error) {
+          return res
+            .status(403)
+            .clearCookie('refreshToken')
+            .json({ error: 'Refresh token is invalid or expired' });
+        }
+
+        const isRefreshTokenWhitelisted = await ValidRefreshToken.findOne({
+          jti: token?.jti,
+        });
+
+        if (!isRefreshTokenWhitelisted) {
+          return res
+            .status(403)
+            .clearCookie('refreshToken')
+            .json({ error: 'Refresh token is invalid or expired' });
+        }
+
+        await ValidRefreshToken.deleteOne({ jti: token.jti });
+
+        const newAccessToken = generateAccessToken(token.id);
+        const newRefreshToken = await generateRefreshToken(token.id);
+
+        return res
+          .status(200)
+          .cookie('accessToken', newAccessToken, {
+            maxAge: ACCESS_TOKEN_COOKIE_MAX_AGE,
+            httpOnly: true,
+            // secure: // add for prod environment
+            // sameSite: // to check
+          })
+          .cookie('refreshToken', newRefreshToken, {
+            maxAge: REFRESH_TOKEN_COOKIE_MAX_AGE,
+            httpOnly: true,
+            // secure: // add for prod environment
+            // sameSite: // to check
+          })
+          .json({ message: 'Access token refreshed' });
+      }
+    );
+  } catch (error) {
+    console.error('Error in refreshToken:', error);
+    return res
+      .status(500)
+      .json({ error: 'An unexpected error occurred during token refresh' });
+  }
 };
 
-const authorizeUser = (_req: IGetUserAuthInfoRequest, res: Response) => {
+const authorizeUser = (_req: Request, res: Response): any => {
   return res.status(200).json({ message: 'User authorized' });
 };
 
-module.exports = {
+export {
   registerUser,
   loginUser,
   logoutUser,

@@ -1,14 +1,12 @@
-import { Response } from 'express';
-const { encryptPassword, decryptPassword } = require('../utils/crypto');
-const { extractFaviconURL } = require('../controllers/faviconController');
-const { logoutUser } = require('./authController');
-const { isValidUrl } = require('../utils/url');
-import Password from '../models/password';
-import User from '../models/user';
+import { Request, Response } from 'express';
+import { extractFaviconURL } from './faviconController';
+import { logoutUser } from './authController';
+import { encryptPassword, decryptPassword } from '../utils/crypto';
+import { isValidUrl } from '../utils/url';
 
-import { IGetUserAuthInfoRequest } from '../types';
+import { Password, User } from '../models';
 
-const savePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
+const savePassword = async (req: Request, res: Response) => {
   try {
     const { username, name, password } = req.body;
     const { id } = req.user;
@@ -47,7 +45,7 @@ const savePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
   }
 };
 
-const updatePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
+const updatePassword = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { name, username, password } = req.body;
@@ -98,7 +96,7 @@ const updatePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
   }
 };
 
-const deletePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
+const deletePassword = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
@@ -113,7 +111,7 @@ const deletePassword = async (req: IGetUserAuthInfoRequest, res: Response) => {
   }
 };
 
-const getAllPasswords = async (req: IGetUserAuthInfoRequest, res: Response) => {
+const getAllPasswords = async (req: Request, res: Response) => {
   try {
     const { id } = req.user;
 
@@ -159,9 +157,4 @@ const getAllPasswords = async (req: IGetUserAuthInfoRequest, res: Response) => {
   }
 };
 
-module.exports = {
-  savePassword,
-  updatePassword,
-  deletePassword,
-  getAllPasswords,
-};
+export { savePassword, updatePassword, deletePassword, getAllPasswords };

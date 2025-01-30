@@ -1,18 +1,14 @@
-import { Request } from 'express';
-
-interface IGetUserAuthInfoRequest extends Request {
-  user: RequestUser;
-}
+import { JwtPayload } from 'jsonwebtoken';
 
 type RequestUser = {
   email: string;
   id: string;
 };
 
-type Token = {
+interface Token extends JwtPayload {
   id: string;
   jti: string;
-};
+}
 
 type UpdatedUserData = {
   passwordsModuleOn: boolean;
@@ -23,4 +19,4 @@ type UpdatedUserData = {
   tag?: string;
 };
 
-export { RequestUser, Token, IGetUserAuthInfoRequest, UpdatedUserData };
+export { RequestUser, Token, UpdatedUserData };

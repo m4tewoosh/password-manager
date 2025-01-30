@@ -1,15 +1,15 @@
-import express from 'express';
-const {
+import { Router } from 'express';
+import {
   registerUser,
   loginUser,
   logoutUser,
   authenticateToken,
   refreshToken,
   authorizeUser,
-} = require('../controllers/authController');
-const { getUser } = require('../controllers/userController');
+} from '../controllers/authController';
+import { getUser } from '../controllers/userController';
 
-const router = express.Router();
+const router = Router();
 
 router.post('/register', registerUser);
 router.post('/login', loginUser);
@@ -19,4 +19,4 @@ router.get('/user', authenticateToken, getUser);
 router.post('/logout', authenticateToken, logoutUser);
 router.post('/auth', authenticateToken, authorizeUser);
 
-module.exports = router;
+export default router;

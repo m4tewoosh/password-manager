@@ -11,6 +11,4 @@ const isValidUrl = (url: string) => {
   return !!urlPattern.test(url);
 };
 
-module.exports = {
-  isValidUrl,
-};
+export { isValidUrl };
