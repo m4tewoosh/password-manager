@@ -5,6 +5,6 @@ const validRefreshTokenSchema = new Schema({
   jti: { type: String, required: true, unique: true },
 });
 
-const ValidRefreshToken = model('validRefreshToken', validRefreshTokenSchema);
+const ValidRefreshToken = model('valid_refresh_token', validRefreshTokenSchema);
 
 export default ValidRefreshToken;
